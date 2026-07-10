@@ -44,16 +44,28 @@ export default function KonamiEgg() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
+          {/* dark scrim so the effect reads clearly over any section */}
+          <div
+            aria-hidden
+            className="absolute inset-0 backdrop-blur-[2px]"
+            style={{
+              background:
+                'radial-gradient(60% 50% at 50% 50%, rgba(0,0,0,0.72), rgba(0,0,0,0.45))',
+            }}
+          />
           <motion.div
             initial={{ scale: 0.6, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center"
           >
-            <div className="text-gradient-gold font-display text-4xl font-black">
+            <div
+              className="text-gradient-gold font-display text-5xl font-black sm:text-7xl"
+              style={{ filter: 'drop-shadow(0 4px 24px rgba(232,195,122,0.55))' }}
+            >
               Royal Flush!
             </div>
-            <div className="mt-1 font-mono text-xs uppercase tracking-[0.4em] text-muted">
+            <div className="mt-2 font-mono text-xs uppercase tracking-[0.5em] text-gold-soft">
               you found the nuts
             </div>
           </motion.div>
