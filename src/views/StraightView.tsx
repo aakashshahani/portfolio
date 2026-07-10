@@ -18,6 +18,7 @@ import SoundToggle from '../components/SoundToggle'
 import CountUp from '../components/fx/CountUp'
 import Magnetic from '../components/fx/Magnetic'
 import CustomCursor from '../components/fx/CustomCursor'
+import DepthParallax from '../components/fx/DepthParallax'
 import { ArrowRight, ExternalIcon, GitHubIcon } from '../components/Icons'
 
 const numbers = [
@@ -120,11 +121,10 @@ export default function StraightView() {
             <div className="relative">
               <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-gold/25 to-transparent blur-2xl" />
               <div className="relative overflow-hidden rounded-[1.75rem] border border-gold/25 bg-gradient-to-b from-felt/40 to-ink">
-                <img
-                  src="/face/portrait-gold.webp"
-                  alt="Aakash Shahani"
-                  loading="lazy"
-                  className="w-full object-cover"
+                <DepthParallax
+                  color="/face/color3d.webp"
+                  depth="/face/depth3d.webp"
+                  className="aspect-[693/975] w-full"
                 />
               </div>
             </div>
