@@ -75,7 +75,8 @@ export default function StraightView() {
 
       <div className="mx-auto max-w-5xl px-6">
         {/* Hero */}
-        <section className="py-20 md:py-28">
+        <section className="grid items-center gap-10 py-20 md:grid-cols-[1.6fr_0.9fr] md:py-28">
+          <div>
           <motion.p {...fadeUp} className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-gold">
             {profile.location} · {profile.pronouns}
           </motion.p>
@@ -108,6 +109,25 @@ export default function StraightView() {
               </a>
             </Magnetic>
             <SocialLinks className="ml-1" />
+          </motion.div>
+          </div>
+
+          <motion.div
+            {...fadeUp}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mx-auto w-full max-w-[260px]"
+          >
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-gold/25 to-transparent blur-2xl" />
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-gold/25 bg-gradient-to-b from-felt/40 to-ink">
+                <img
+                  src="/face/portrait-gold.webp"
+                  alt="Aakash Shahani"
+                  loading="lazy"
+                  className="w-full object-cover"
+                />
+              </div>
+            </div>
           </motion.div>
         </section>
 

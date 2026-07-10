@@ -19,18 +19,22 @@ export default function Dealer() {
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         className="flex flex-col items-center"
       >
-        {/* avatar */}
-        <div className="relative grid h-16 w-16 place-items-center rounded-full border-2 border-gold/50 bg-gradient-to-b from-felt-2 to-ink shadow-lg shadow-black/40">
-          <span className="text-gradient-gold font-display text-xl font-black">
-            {profile.initials}
-          </span>
+        {/* avatar — Aakash's face, rendered gold */}
+        <div className="relative">
+          <div className="h-16 w-16 overflow-hidden rounded-full border-2 border-gold/60 bg-gradient-to-b from-felt-2 to-ink shadow-lg shadow-black/40">
+            <img
+              src="/face/portrait-gold.webp"
+              alt="Aakash, the dealer"
+              className="h-full w-full scale-110 object-cover object-top"
+            />
+          </div>
           {/* collar + bowtie */}
           <svg
             viewBox="0 0 40 20"
-            className="absolute -bottom-2 h-5 w-10"
+            className="absolute -bottom-2 left-1/2 h-5 w-10 -translate-x-1/2"
             aria-hidden
           >
-            <path d="M6 2 L20 8 L34 2 L34 6 L22 12 L18 12 L6 6 Z" fill="#e9efec" opacity="0.85" />
+            <path d="M6 2 L20 8 L34 2 L34 6 L22 12 L18 12 L6 6 Z" fill="#e9efec" opacity="0.9" />
             <path d="M12 10 L20 8 L20 16 Z" fill="#e5484d" />
             <path d="M28 10 L20 8 L20 16 Z" fill="#e5484d" />
             <rect x="18.5" y="9.5" width="3" height="5" rx="1" fill="#b83a3e" />

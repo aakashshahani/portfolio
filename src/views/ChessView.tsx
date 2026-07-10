@@ -15,11 +15,10 @@ import {
 } from '../data/content'
 import { useViewMemory } from '../lib/useViewMemory'
 import { useSeo } from '../lib/useSeo'
-import { usePrefersReducedMotion } from '../lib/usePrefersReducedMotion'
 import { play } from '../lib/sound'
 import ChessPiece, { type PieceName } from '../components/ChessPiece'
-import HeroChessBoard from '../components/HeroChessBoard'
 import MoveList from '../components/MoveList'
+import ParticleFace from '../components/fx/ParticleFace'
 import RatingChart from '../components/RatingChart'
 import ChessClock from '../components/ChessClock'
 import ChessPuzzle from '../components/ChessPuzzle'
@@ -70,7 +69,6 @@ const phases = [
 
 export default function ChessView() {
   const { set } = useViewMemory()
-  const reduced = usePrefersReducedMotion()
   const [selected, setSelected] = useState<Project | null>(null)
 
   useSeo(
@@ -91,17 +89,6 @@ export default function ChessView() {
     }
     return arr
   }, [])
-
-  // Hero board auto-plays the opening on a loop.
-  const [heroPly, setHeroPly] = useState(0)
-  useEffect(() => {
-    if (reduced) {
-      setHeroPly(fens.length - 1)
-      return
-    }
-    const t = setInterval(() => setHeroPly((p) => (p + 1) % fens.length), 1500)
-    return () => clearInterval(t)
-  }, [reduced, fens.length])
 
   // The interactive "game score" board (defaults to the final position).
   const [gamePly, setGamePly] = useState(careerMoves.length)
@@ -207,9 +194,10 @@ export default function ChessView() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex justify-center"
+          className="relative flex justify-center"
         >
-          <HeroChessBoard fen={fens[heroPly]} onScrollToGame={() => scrollTo('game')} />
+          <div className="pointer-events-none absolute inset-0 rounded-full bg-gold/10 blur-3xl" />
+          <ParticleFace className="relative h-[440px] w-full max-w-[320px]" />
         </motion.div>
       </section>
 
