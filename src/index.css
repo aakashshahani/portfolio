@@ -138,6 +138,42 @@ body {
     inset 0 0 40px rgba(0, 0, 0, 0.6);
 }
 
+/* Print: turn the Classic view into a clean, ink-on-paper resume */
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  header,
+  footer,
+  canvas,
+  .no-print {
+    display: none !important;
+  }
+  * {
+    color: #111 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  .glass {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    backdrop-filter: none !important;
+  }
+  .text-gradient-gold {
+    -webkit-text-fill-color: #111 !important;
+    color: #111 !important;
+    background: none !important;
+  }
+  a {
+    text-decoration: underline;
+  }
+  section {
+    break-inside: avoid;
+    padding: 12px 0 !important;
+  }
+}
+
 /* Subtle grain/vignette layer */
 .vignette::after {
   content: '';
