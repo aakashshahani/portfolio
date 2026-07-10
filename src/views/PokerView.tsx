@@ -24,6 +24,7 @@ import Magnetic from '../components/fx/Magnetic'
 import CursorGlow from '../components/fx/CursorGlow'
 import CustomCursor from '../components/fx/CustomCursor'
 import FeltShader from '../components/fx/FeltShader'
+import Dealer from '../components/Dealer'
 import { Footer } from './StraightView'
 
 const CHIP_VALUES = ['5', '10', '25', '100', '500', '1K']
@@ -154,7 +155,7 @@ export default function PokerView() {
           <div className="table-light rail relative mt-12 overflow-hidden rounded-[42%/60%] bg-felt sm:rounded-[46%/72%]">
             <FeltShader />
             <CursorGlow color="rgba(232,195,122,0.18)" size={600} />
-            <div className="relative z-10 px-4 py-12 sm:px-10 sm:py-16">
+            <div className="relative z-10 flex flex-col items-center px-4 py-10 sm:px-10 sm:py-14">
               {/* dealer button */}
               <div
                 aria-hidden
@@ -163,24 +164,27 @@ export default function PokerView() {
                 D
               </div>
 
+              {/* the dealer — cards are dealt from here */}
+              <Dealer />
+
               <motion.div
-                className="flex flex-wrap items-end justify-center gap-x-3 gap-y-8 sm:gap-x-5"
+                className="mt-8 flex flex-wrap items-end justify-center gap-x-3 gap-y-8 sm:gap-x-5"
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: '-80px' }}
-                variants={{ show: { transition: { staggerChildren: 0.16 } } }}
+                variants={{ show: { transition: { staggerChildren: 0.18, delayChildren: 0.1 } } }}
                 onViewportEnter={() => play('deal')}
               >
                 <Street label="Flop">
-                  {flop.map((p) => (
-                    <PlayingCard key={p.id} project={p} onSelect={setSelected} />
+                  {flop.map((p, i) => (
+                    <PlayingCard key={p.id} project={p} order={i} onSelect={setSelected} />
                   ))}
                 </Street>
                 <Street label="Turn">
-                  <PlayingCard project={turn} onSelect={setSelected} />
+                  <PlayingCard project={turn} order={3} onSelect={setSelected} />
                 </Street>
                 <Street label="River">
-                  <PlayingCard project={river} onSelect={setSelected} />
+                  <PlayingCard project={river} order={4} onSelect={setSelected} />
                 </Street>
               </motion.div>
             </div>

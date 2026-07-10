@@ -6,22 +6,29 @@ import Tilt from './fx/Tilt'
 interface Props {
   project: Project
   onSelect: (p: Project) => void
+  order?: number // deal order (0..4); cards originate from the dealer, top-center
 }
 
 const isRed = (s: string) => s === '♥' || s === '♦'
 
-// The deal is orchestrated by the parent container (staggerChildren), so every
-// card animates in together when the table scrolls into view — no card is ever
-// left invisible waiting for its own intersection (which broke on mobile).
+// Cards are dealt from the dealer at top-center: each starts pulled toward the
+// centre and above, then fans out to its spot. Timing comes from the parent's
+// staggerChildren, so nothing is left waiting on its own intersection.
 const cardVariants: Variants = {
-  hidden: { opacity: 0, x: 120, y: -70, rotate: 14, scale: 0.9 },
+  hidden: (o: number = 2) => ({
+    opacity: 0,
+    x: (2 - o) * 56,
+    y: -195,
+    rotate: (o - 2) * 9,
+    scale: 0.55,
+  }),
   show: {
     opacity: 1,
     x: 0,
     y: 0,
     rotate: 0,
     scale: 1,
-    transition: { type: 'spring', stiffness: 95, damping: 14 },
+    transition: { type: 'spring', stiffness: 85, damping: 14 },
   },
 }
 
@@ -30,12 +37,13 @@ const cardVariants: Variants = {
  * required, so it works on touch). Lifts/tilts on hover as a flourish;
  * click opens the modal.
  */
-export default function PlayingCard({ project, onSelect }: Props) {
+export default function PlayingCard({ project, onSelect, order = 2 }: Props) {
   const red = isRed(project.card.suit)
 
   return (
     <motion.button
       variants={cardVariants}
+      custom={order}
       onClick={() => {
         play('click')
         onSelect(project)
