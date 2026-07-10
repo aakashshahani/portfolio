@@ -1,0 +1,153 @@
+@import 'tailwindcss';
+
+/* ---- Design tokens ------------------------------------------------------ */
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Sora', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Casino / felt palette — dark, restrained, professional */
+  --color-ink: #0a0f0d; /* near-black background */
+  --color-ink-2: #0f1613; /* raised surface */
+  --color-felt: #0e2b22; /* deep table felt */
+  --color-felt-2: #123a2c;
+  --color-gold: #e8c37a; /* chip / accent gold */
+  --color-gold-soft: #f4dca6;
+  --color-card-red: #e5484d; /* hearts / diamonds */
+  --color-chip-blue: #4c6ef5;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-muted: #8a978f;
+  --color-fg: #e9efec;
+}
+
+/* ---- Base --------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Thin gold scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 195, 122, 0.25);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(232, 195, 122, 0.45);
+}
+
+/* ---- Reusable utilities ------------------------------------------------- */
+@utility glass {
+  background: color-mix(in srgb, var(--color-ink-2) 70%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--color-line);
+}
+
+@utility text-gradient-gold {
+  background: linear-gradient(135deg, #f4dca6 0%, #e8c37a 45%, #b8862f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Felt radial glow used behind hero content */
+.felt-bg {
+  background:
+    radial-gradient(
+      120% 90% at 50% -10%,
+      rgba(18, 58, 44, 0.55) 0%,
+      rgba(10, 15, 13, 0) 60%
+    ),
+    radial-gradient(
+      80% 60% at 80% 20%,
+      rgba(76, 110, 245, 0.1) 0%,
+      rgba(10, 15, 13, 0) 55%
+    ),
+    var(--color-ink);
+}
+
+/* Poker felt texture — subtle woven cross-hatch + soft depth */
+.felt-texture {
+  background-color: #0e2b22;
+  background-image:
+    radial-gradient(120% 80% at 50% 0%, rgba(30, 80, 60, 0.7), rgba(10, 20, 16, 0) 70%),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 4px);
+}
+
+/* An overhead "table light" pooled over the felt */
+.table-light {
+  position: relative;
+}
+.table-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    60% 55% at 50% 12%,
+    rgba(255, 240, 200, 0.16) 0%,
+    rgba(255, 240, 200, 0) 60%
+  );
+  pointer-events: none;
+}
+
+/* Wooden/leather table rail */
+.rail {
+  border: 12px solid transparent;
+  border-image: linear-gradient(
+      145deg,
+      #5b3b1f 0%,
+      #7a4f27 30%,
+      #3d2814 55%,
+      #6b451f 80%,
+      #2e1d0f 100%
+    )
+    1;
+  box-shadow:
+    inset 0 0 0 2px rgba(232, 195, 122, 0.15),
+    inset 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Subtle grain/vignette layer */
+.vignette::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 120% at 50% 40%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  z-index: 1;
+}
