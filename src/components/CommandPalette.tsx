@@ -30,6 +30,11 @@ export default function CommandPalette() {
       { id: 'linkedin', label: 'Open LinkedIn', glyph: '↗', run: () => window.open(profile.linkedin, '_blank') },
       { id: 'email', label: 'Copy email', hint: profile.email, glyph: '✉', run: () => navigator.clipboard?.writeText(profile.email) },
     ]
+    const secrets: Command[] = [
+      { id: 'hire', label: 'sudo hire-me', hint: 'best decision you’ll make today', glyph: '✦', run: () => window.open(`mailto:${profile.email}?subject=Let’s talk`) },
+      { id: 'whoami', label: 'whoami', hint: profile.tagline, glyph: '✦', run: () => navigate('/straight') },
+      { id: 'allin', label: 'all in', hint: 'go to the poker table', glyph: '♠', run: () => navigate('/poker') },
+    ]
     const res: Command[] = resumes.map((r) => ({
       id: `resume-${r.id}`,
       label: `Resume — ${r.label}`,
@@ -43,7 +48,7 @@ export default function CommandPalette() {
       glyph: p.card.suit,
       run: () => p.repo && window.open(p.repo, '_blank'),
     }))
-    return [...nav, ...links, ...res, ...proj]
+    return [...nav, ...links, ...res, ...proj, ...secrets]
   }, [navigate])
 
   const filtered = useMemo(() => {
