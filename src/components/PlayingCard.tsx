@@ -1,6 +1,7 @@
 import { motion, type Variants } from 'framer-motion'
 import type { Project } from '../data/content'
 import { play } from '../lib/sound'
+import Tilt from './fx/Tilt'
 
 interface Props {
   project: Project
@@ -42,8 +43,9 @@ export default function PlayingCard({ project, onSelect }: Props) {
       onHoverStart={() => play('flip')}
       aria-label={`${project.name} — ${project.tagline}. Open details.`}
       className="group relative h-52 w-36 shrink-0 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 sm:h-64 sm:w-44"
-      whileHover={{ y: -14, rotate: red ? 1.5 : -1.5, transition: { duration: 0.2 } }}
+      whileHover={{ y: -14, transition: { duration: 0.2 } }}
     >
+      <Tilt max={16} className="h-full w-full">
       <div className="flex h-full w-full flex-col justify-between rounded-2xl border border-gold/25 bg-white p-3 text-ink shadow-xl transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-gold/20">
         <div className="flex items-start justify-between">
           <CardCorner rank={project.card.rank} suit={project.card.suit} red={red} />
@@ -73,6 +75,7 @@ export default function PlayingCard({ project, onSelect }: Props) {
           />
         </div>
       </div>
+      </Tilt>
     </motion.button>
   )
 }

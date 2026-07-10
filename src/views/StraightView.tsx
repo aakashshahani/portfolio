@@ -15,7 +15,17 @@ import ResumeButton from '../components/ResumeButton'
 import SocialLinks from '../components/SocialLinks'
 import ViewSwitcher from '../components/ViewSwitcher'
 import SoundToggle from '../components/SoundToggle'
+import CountUp from '../components/fx/CountUp'
+import Magnetic from '../components/fx/Magnetic'
+import CustomCursor from '../components/fx/CustomCursor'
 import { ArrowRight, ExternalIcon, GitHubIcon } from '../components/Icons'
+
+const numbers = [
+  { value: 6, decimals: 0, suffix: '', label: 'Projects shipped' },
+  { value: 0.788, decimals: 3, suffix: '', label: 'Best macro-F1' },
+  { value: 2.8, decimals: 1, suffix: 'ms', label: 'p99 serving latency' },
+  { value: 88, decimals: 0, suffix: '%', label: 'Peak test coverage' },
+]
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -42,6 +52,8 @@ export default function StraightView() {
       transition={{ duration: 0.35 }}
       className="min-h-screen bg-ink"
     >
+      <CustomCursor />
+
       {/* Nav */}
       <header className="sticky top-0 z-40 border-b border-line bg-ink/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
@@ -87,12 +99,14 @@ export default function StraightView() {
             className="mt-8 flex flex-wrap items-center gap-3"
           >
             <ResumeButton />
-            <a
-              href="#work"
-              className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-fg transition-colors hover:border-gold/50 hover:text-gold"
-            >
-              View work <ArrowRight width={16} height={16} />
-            </a>
+            <Magnetic>
+              <a
+                href="#work"
+                className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-fg transition-colors hover:border-gold/50 hover:text-gold"
+              >
+                View work <ArrowRight width={16} height={16} />
+              </a>
+            </Magnetic>
             <SocialLinks className="ml-1" />
           </motion.div>
         </section>
@@ -116,6 +130,20 @@ export default function StraightView() {
               </p>
             </div>
             <div className="shrink-0 text-sm text-muted">{currentWork.org}</div>
+          </div>
+        </motion.section>
+
+        {/* By the numbers */}
+        <motion.section {...fadeUp} className="py-14">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {numbers.map((n) => (
+              <div key={n.label} className="glass rounded-2xl p-6 text-center">
+                <div className="font-display text-3xl font-extrabold text-gradient-gold sm:text-4xl">
+                  <CountUp value={n.value} decimals={n.decimals} suffix={n.suffix} />
+                </div>
+                <div className="mt-1 text-xs text-muted">{n.label}</div>
+              </div>
+            ))}
           </div>
         </motion.section>
 

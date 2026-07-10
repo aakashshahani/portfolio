@@ -27,6 +27,9 @@ import ProjectModal from '../components/ProjectModal'
 import ViewSwitcher from '../components/ViewSwitcher'
 import SocialLinks from '../components/SocialLinks'
 import SoundToggle from '../components/SoundToggle'
+import Magnetic from '../components/fx/Magnetic'
+import CursorGlow from '../components/fx/CursorGlow'
+import CustomCursor from '../components/fx/CustomCursor'
 import { Footer } from './StraightView'
 
 const glyphName: Record<string, PieceName> = {
@@ -130,6 +133,8 @@ export default function ChessView() {
       transition={{ duration: 0.35 }}
       className="min-h-screen bg-ink"
     >
+      <CustomCursor glyph="♟" />
+
       {/* Nav */}
       <header className="sticky top-0 z-40 border-b border-line bg-ink/70 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -145,8 +150,9 @@ export default function ChessView() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-20">
-        <div>
+      <section className="relative mx-auto grid max-w-6xl items-center gap-10 overflow-hidden px-6 py-16 md:grid-cols-2 md:py-20">
+        <CursorGlow color="rgba(76,110,245,0.14)" size={560} />
+        <div className="relative">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -186,12 +192,14 @@ export default function ChessView() {
             transition={{ delay: 0.36 }}
             className="mt-8 flex flex-wrap items-center gap-4"
           >
-            <button
-              onClick={() => scrollTo('game')}
-              className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-bold text-ink transition-transform hover:scale-105"
-            >
-              Replay the game
-            </button>
+            <Magnetic>
+              <button
+                onClick={() => scrollTo('game')}
+                className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-bold text-ink transition-transform hover:scale-105"
+              >
+                Replay the game
+              </button>
+            </Magnetic>
             <ChessClock />
           </motion.div>
         </div>

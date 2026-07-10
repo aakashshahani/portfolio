@@ -20,6 +20,10 @@ import SocialLinks from '../components/SocialLinks'
 import SoundToggle from '../components/SoundToggle'
 import { ChipStack, CHIP_STYLES } from '../components/PokerChip'
 import { ExternalIcon } from '../components/Icons'
+import Magnetic from '../components/fx/Magnetic'
+import CursorGlow from '../components/fx/CursorGlow'
+import CustomCursor from '../components/fx/CustomCursor'
+import FeltShader from '../components/fx/FeltShader'
 import { Footer } from './StraightView'
 
 const CHIP_VALUES = ['5', '10', '25', '100', '500', '1K']
@@ -53,6 +57,8 @@ export default function PokerView() {
       transition={{ duration: 0.35 }}
       className="felt-bg min-h-screen"
     >
+      <CustomCursor glyph="♠" />
+
       {/* Nav */}
       <header className="sticky top-0 z-40 border-b border-line bg-ink/70 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -114,12 +120,14 @@ export default function PokerView() {
           transition={{ delay: 0.8 }}
           className="mt-9 flex flex-wrap items-center justify-center gap-3"
         >
-          <button
-            onClick={scrollToBoard}
-            className="inline-flex items-center gap-2 rounded-full bg-gold px-7 py-3 text-sm font-bold text-ink shadow-lg shadow-gold/20 transition-transform hover:scale-105"
-          >
-            ♠ Deal me in
-          </button>
+          <Magnetic>
+            <button
+              onClick={scrollToBoard}
+              className="inline-flex items-center gap-2 rounded-full bg-gold px-7 py-3 text-sm font-bold text-ink shadow-lg shadow-gold/20 transition-transform hover:scale-105"
+            >
+              ♠ Deal me in
+            </button>
+          </Magnetic>
           {pokersim?.repo && (
             <a
               href={pokersim.repo}
@@ -143,8 +151,10 @@ export default function PokerView() {
           />
 
           {/* Oval felt table */}
-          <div className="table-light rail relative mt-12 overflow-hidden rounded-[42%/60%] sm:rounded-[46%/72%]">
-            <div className="felt-texture px-4 py-12 sm:px-10 sm:py-16">
+          <div className="table-light rail relative mt-12 overflow-hidden rounded-[42%/60%] bg-felt sm:rounded-[46%/72%]">
+            <FeltShader />
+            <CursorGlow color="rgba(232,195,122,0.18)" size={600} />
+            <div className="relative z-10 px-4 py-12 sm:px-10 sm:py-16">
               {/* dealer button */}
               <div
                 aria-hidden

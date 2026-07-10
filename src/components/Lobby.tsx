@@ -8,6 +8,9 @@ import SocialLinks from './SocialLinks'
 import SoundToggle from './SoundToggle'
 import { play } from '../lib/sound'
 import { ArrowRight } from './Icons'
+import Tilt from './fx/Tilt'
+import CursorGlow from './fx/CursorGlow'
+import CustomCursor from './fx/CustomCursor'
 
 const tables = [
   {
@@ -42,6 +45,13 @@ const tables = [
   },
 ]
 
+// Warm a view's lazy chunk on hover so navigation is instant.
+const prefetch = (to: string) => {
+  if (to === '/poker') import('../views/PokerView')
+  else if (to === '/chess') import('../views/ChessView')
+  else if (to === '/straight') import('../views/StraightView')
+}
+
 export default function Lobby() {
   const { get } = useViewMemory()
   const navigate = useNavigate()
@@ -59,6 +69,9 @@ export default function Lobby() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
     >
+      <CustomCursor />
+      <CursorGlow />
+
       {/* floating suit glyphs in the backdrop */}
       <FloatingSuits />
 
@@ -109,12 +122,16 @@ export default function Lobby() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.36 + i * 0.08, type: 'spring', stiffness: 120, damping: 16 }}
-              onHoverStart={() => play('chip')}
+              onHoverStart={() => {
+                play('chip')
+                prefetch(t.to)
+              }}
             >
+              <Tilt max={9} className="h-full">
               <Link
                 to={t.to}
                 onClick={() => play('deal')}
-                className={`glass group relative flex h-full flex-col items-center rounded-3xl border border-line p-6 transition-all duration-300 hover:-translate-y-1.5 ${t.ring}`}
+                className={`glass group relative flex h-full flex-col items-center rounded-3xl border border-line p-6 transition-colors duration-300 ${t.ring}`}
               >
                 {t.recommended && (
                   <span className="absolute -top-2.5 right-4 rounded-full bg-gold px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink">
@@ -137,6 +154,7 @@ export default function Lobby() {
                   Enter <ArrowRight width={14} height={14} />
                 </span>
               </Link>
+              </Tilt>
             </motion.div>
           ))}
         </div>
