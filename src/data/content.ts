@@ -1,9 +1,6 @@
 // -----------------------------------------------------------------------------
-// Single source of truth for every view (Lobby, Poker, Chess, Straight).
-// Edit here and all three "tables" update.
+// Single source of truth for the site. Edit here and every section updates.
 // -----------------------------------------------------------------------------
-
-export type PlayingCard = { rank: string; suit: '♠' | '♥' | '♦' | '♣' }
 
 export interface Project {
   id: string
@@ -11,18 +8,13 @@ export interface Project {
   tagline: string
   blurb: string // 1–2 sentence plain-English summary
   highlights: string[] // resume-grade bullet points
+  metrics: { value: string; label: string }[] // headline numbers shown on the row
   stack: string[]
   period: string
   repo?: string
   demo?: string
-  image?: string // real screenshot / GIF shown in the modal & classic card
+  image?: string // real screenshot / GIF
   featured: boolean
-  // Poker flavor
-  card: PlayingCard // the card this project is dealt as
-  handRank: string // e.g. "Royal Flush" — a playful strength label
-  // Chess flavor
-  phase: 'opening' | 'midgame' | 'endgame'
-  piece: '♟' | '♞' | '♝' | '♜' | '♛' | '♚'
 }
 
 export interface Experience {
@@ -38,8 +30,8 @@ export const profile = {
   name: 'Aakash Shahani',
   initials: 'AS',
   pronouns: 'he/him',
+  role: 'Software & ML Engineer',
   tagline: 'Builder of ML systems, real-time pipelines & AI agents.',
-  // A short, sharp intro used on the Straight view.
   intro:
     'Computer Science grad from the University of South Florida. I build production-grade ML and data systems — real-time streaming pipelines, agentic RAG platforms, fraud models, and AI agents that reason under uncertainty. I care about rigor: honest evaluation, leakage-free pipelines, tests that fail on the right things.',
   location: 'Tampa, FL',
@@ -48,9 +40,7 @@ export const profile = {
   github: 'https://github.com/aakashshahani',
   githubUser: 'aakashshahani',
   linkedin: 'https://linkedin.com/in/aakash-shahani',
-  // Poker/chess flavor lines used across themed views
-  pokerLine: 'Reads the table. Plays the long game. Folds the ego, not the hand.',
-  chessLine: 'Thinks in openings, midgames, and endgames — on and off the board.',
+  availability: 'Open to software, ML & data roles',
 }
 
 // Three role-targeted resumes, each a downloadable PDF in /public/resumes.
@@ -167,6 +157,29 @@ export const skills: { group: string; items: string[] }[] = [
 
 export const projects: Project[] = [
   {
+    id: 'scholarlens',
+    name: 'ScholarLens',
+    tagline: 'Agentic RAG platform that finds contradictions across papers.',
+    blurb:
+      'A full-stack research platform that decomposes papers into claims and flags contradictions using a two-stage retriever plus an LLM judge — deployed live with multi-user isolation.',
+    highlights: [
+      'Architected an agentic RAG platform that decomposes papers into claims and flags contradictions via a two-stage BM25 + dense pre-filter and an LLM judge, cutting ~4,500 pairwise LLM calls by over 90%.',
+      'Eliminated ~400MB of torch memory that was OOM-crashing a 512MB host by selecting the embedding model on measured class separation and migrating to a hosted embedding API.',
+      'Ran 6 analyses per paper concurrently for a 5× speedup at equal API cost; served pgvector (HNSW) search behind a cross-encoder reranker at nDCG@5 0.98, with Fernet-encrypted keys.',
+    ],
+    metrics: [
+      { value: '0.98', label: 'nDCG@5' },
+      { value: '−90%', label: 'LLM calls' },
+      { value: '5×', label: 'analysis speedup' },
+    ],
+    stack: ['FastAPI', 'Next.js', 'pgvector', 'Anthropic API', 'BM25', 'Docker'],
+    period: 'May 2026 — Present',
+    repo: 'https://github.com/aakashshahani/ScholarLens',
+    demo: 'https://scholarlens-research.vercel.app',
+    image: '/projects/scholarlens.webp',
+    featured: true,
+  },
+  {
     id: 'pokersim',
     name: 'PokerSim',
     tagline: 'A platform for evaluating AI agents under hidden information.',
@@ -178,37 +191,16 @@ export const projects: Project[] = [
       'Scored play honestly: bb/100 with 95% confidence intervals, duplicate-hand variance reduction, and an Elo ladder; flags rate-limited runs as untrustworthy instead of reporting noise.',
       'Shipped a live web table you can play against the AI with a coach in your ear. 88 tests, 88% coverage, CI green. Free to run on local models.',
     ],
+    metrics: [
+      { value: '88%', label: 'test coverage' },
+      { value: '2', label: 'game environments' },
+      { value: '95%', label: 'CI on bb/100' },
+    ],
     stack: ['Python', 'LangGraph', 'FastAPI', 'pokerkit', 'WebSockets', 'Ollama'],
     period: '2025',
     repo: 'https://github.com/aakashshahani/pokersim',
     image: '/projects/pokersim.webp',
     featured: true,
-    card: { rank: 'A', suit: '♠' },
-    handRank: 'Royal Flush',
-    phase: 'endgame',
-    piece: '♚',
-  },
-  {
-    id: 'scholarlens',
-    name: 'ScholarLens',
-    tagline: 'Agentic RAG platform that finds contradictions across papers.',
-    blurb:
-      'A full-stack research platform that decomposes papers into claims and flags contradictions using a two-stage retriever plus an LLM judge — deployed live with multi-user isolation.',
-    highlights: [
-      'Architected an agentic RAG platform that decomposes papers into claims and flags contradictions via a two-stage BM25 + dense pre-filter and an LLM judge, hitting macro-F1 0.788 / κ 0.683 while cutting ~4,500 pairwise LLM calls by over 90%.',
-      'Eliminated ~400MB of torch memory that was OOM-crashing a 512MB host by selecting the embedding model on measured class separation and migrating to a hosted embedding API.',
-      'Ran 6 analyses per paper concurrently for a 5× speedup at equal API cost; served pgvector (HNSW) search behind a cross-encoder reranker at nDCG@5 0.98, with Fernet-encrypted keys.',
-    ],
-    stack: ['FastAPI', 'Next.js', 'pgvector', 'Anthropic API', 'BM25', 'Docker'],
-    period: 'May 2026 — Present',
-    repo: 'https://github.com/aakashshahani/ScholarLens',
-    demo: 'https://scholarlens-research.vercel.app',
-    image: '/projects/scholarlens.webp',
-    featured: true,
-    card: { rank: 'K', suit: '♦' },
-    handRank: 'Straight Flush',
-    phase: 'endgame',
-    piece: '♛',
   },
   {
     id: 'tradepulse',
@@ -221,15 +213,16 @@ export const projects: Project[] = [
       'Sustained sub-second 600–800ms micro-batches under ~1,500 rows/sec bursts across 9 Dockerized services with a dead-letter queue, checkpoint recovery, and Prometheus/Grafana observability.',
       'Validated by 20 tests (incl. a Testcontainers integration test) in GitHub Actions CI.',
     ],
+    metrics: [
+      { value: '0', label: 'dupes on crash test' },
+      { value: '~700ms', label: 'micro-batches' },
+      { value: '9', label: 'services' },
+    ],
     stack: ['Kafka', 'Spark Streaming', 'PostgreSQL', 'Docker', 'Grafana', 'Prometheus'],
     period: 'Mar — May 2026',
     repo: 'https://github.com/aakashshahani/tradepulse',
     image: '/projects/tradepulse.gif',
     featured: true,
-    card: { rank: 'Q', suit: '♣' },
-    handRank: 'Four of a Kind',
-    phase: 'midgame',
-    piece: '♜',
   },
   {
     id: 'fraudguard',
@@ -242,15 +235,16 @@ export const projects: Project[] = [
       'Used SHAP to confirm 95% of model signal traces to real transaction content, and tuned a cost-based threshold catching 63% of fraud.',
       'Deployed a FastAPI service with a training-serving skew test verifying parity across all 438 features; containerized and validated by 24 tests in CI.',
     ],
+    metrics: [
+      { value: '15×', label: 'base-rate PR-AUC' },
+      { value: '590K', label: 'transactions' },
+      { value: '438', label: 'features, skew-tested' },
+    ],
     stack: ['XGBoost', 'SHAP', 'FastAPI', 'imbalanced-learn', 'W&B', 'Docker'],
     period: 'Jan — Feb 2026',
     repo: 'https://github.com/aakashshahani/fraudguard',
     image: '/projects/fraudguard.webp',
     featured: false,
-    card: { rank: 'J', suit: '♥' },
-    handRank: 'Full House',
-    phase: 'midgame',
-    piece: '♝',
   },
   {
     id: 'newsrec',
@@ -263,54 +257,68 @@ export const projects: Project[] = [
       'Ran an A/B replay that lifted simulated click-through from 10.5% to 18.8% (+80%, 95% CI [+7.9, +8.9] pts).',
       'Served candidate generation at 2.8ms p99 over 3,000 users by precomputing item vectors into a FAISS HNSW index so the request path never loads a model; Docker + 17 tests in CI.',
     ],
+    metrics: [
+      { value: '+0.124', label: 'AUC vs baseline' },
+      { value: '2.8ms', label: 'p99 serving' },
+      { value: '+80%', label: 'CTR in A/B replay' },
+    ],
     stack: ['PyTorch', 'FAISS', 'FastAPI', 'PyArrow', 'Docker'],
     period: 'Jul 2026',
     repo: 'https://github.com/aakashshahani/newsrec',
     image: '/projects/newsrec.webp',
     featured: false,
-    card: { rank: '10', suit: '♠' },
-    handRank: 'Flush',
-    phase: 'midgame',
-    piece: '♞',
   },
 ]
 
-// Career as a real chess game — the Ruy Lopez (a.k.a. "The Spanish"): a
-// principled, classical opening. Each half-move maps to a milestone, with
-// chess annotations (! good, !! brilliant) on the strongest results.
-export type Annotation = '' | '!' | '!!' | '?!'
-export interface CareerMove {
-  no: string // "1.", "1...", etc.
-  move: string // algebraic notation
-  side: 'w' | 'b'
-  note: string
-  annotation?: Annotation
-  phase: 'opening' | 'midgame' | 'endgame'
-  projectId?: string // links a move to a project (for click-to-scroll)
+// Marquee strip between hero and work.
+export const marqueeItems = [
+  'Real-time pipelines',
+  'Agentic RAG',
+  'LLM agents',
+  'Recommenders',
+  'Fraud ML',
+  'Kafka',
+  'Spark',
+  'PyTorch',
+  'FastAPI',
+  'Docker',
+  'PostgreSQL',
+  'Anthropic API',
+]
+
+// The person behind the projects — journey + languages.
+export const story = {
+  narrative:
+    'Grew up in Hong Kong, moved to Hyderabad in grade 9, came to Tampa for college. Three cities, three school systems, six languages.',
+  route: 'Hong Kong → Hyderabad → Tampa',
+  stops: [
+    {
+      place: 'Hong Kong',
+      label: 'Grew up',
+      note: 'Spent most of my life here, switching between Cantonese, Mandarin, and English every day.',
+    },
+    {
+      place: 'Hyderabad, India',
+      label: 'Grade 9 → high school',
+      note: 'Moved across the world at 14 and finished high school in a new country.',
+    },
+    {
+      place: 'Tampa, FL',
+      label: 'College → now',
+      note: 'B.S. in Computer Science at USF, graduated Dec 2025. Now doing ML research at the CSSAI Lab.',
+    },
+  ],
+  languages: [
+    { name: 'English', native: 'English' },
+    { name: 'Cantonese', native: '廣東話' },
+    { name: 'Mandarin', native: '普通话' },
+    { name: 'Hindi', native: 'हिन्दी' },
+    { name: 'Sindhi', native: 'سنڌي' },
+    { name: 'French', native: 'Français' },
+  ],
 }
 
-export const openingName = 'The Ruy Lopez'
-export const careerMoves: CareerMove[] = [
-  { no: '1.', move: 'e4', side: 'w', note: 'Enrolled — B.S. Computer Science, University of South Florida', phase: 'opening' },
-  { no: '1…', move: 'e5', side: 'b', note: 'AI Research Assistant — bioinformatics ETL + an LSTM binding-site classifier', phase: 'opening' },
-  { no: '2.', move: 'Nf3', side: 'w', note: 'FraudGuard — leakage-free fraud ML, ~15× base-rate PR-AUC', annotation: '!', phase: 'midgame', projectId: 'fraudguard' },
-  { no: '2…', move: 'Nc6', side: 'b', note: 'TradePulse — exactly-once real-time streaming pipeline', annotation: '!', phase: 'midgame', projectId: 'tradepulse' },
-  { no: '3.', move: 'Bb5', side: 'w', note: 'NewsRec — cold-start recommender, +0.124 AUC over baselines', phase: 'midgame', projectId: 'newsrec' },
-  { no: '3…', move: 'a6', side: 'b', note: 'ML Research Assistant @ CSSAI Lab — negotiation-behavior classification', annotation: '!', phase: 'endgame' },
-  { no: '4.', move: 'Ba4', side: 'w', note: 'ScholarLens — agentic RAG platform, macro-F1 0.788, deployed live', annotation: '!!', phase: 'endgame', projectId: 'scholarlens' },
-  { no: '4…', move: 'Nf6', side: 'b', note: 'PokerSim — AI agents reasoning under hidden information', annotation: '!!', phase: 'endgame', projectId: 'pokersim' },
-  { no: '5.', move: 'O-O', side: 'w', note: 'Castled — graduated Dec 2025, playing for the win', phase: 'endgame' },
-]
-
-// A chess.com-style rating curve for the "Endgame" — trajectory, not literal Elo.
-export const ratingCurve: { label: string; rating: number; note: string }[] = [
-  { label: '’22', rating: 1200, note: 'Started CS' },
-  { label: '’24', rating: 1520, note: 'First research role' },
-  { label: '’25', rating: 1810, note: 'Graduated + shipped projects' },
-  { label: '’26', rating: 2050, note: 'Research + flagship builds' },
-]
-
-// Current research — shown as "the hand still in play" / the endgame in progress.
+// Current research — the "Now" block.
 export const currentWork = {
   title: 'Negotiation Behavior & Cue Classification',
   org: 'CSSAI Lab @ USF',

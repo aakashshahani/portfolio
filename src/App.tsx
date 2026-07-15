@@ -1,57 +1,53 @@
-import { lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence, MotionConfig } from 'framer-motion'
-import Lobby from './components/Lobby'
+import { useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { MotionConfig } from 'framer-motion'
+import Lenis from 'lenis'
+import Home from './views/Home'
+import CaseStudy from './views/CaseStudy'
 import CommandPalette from './components/CommandPalette'
-import BootSequence from './components/BootSequence'
+import Preloader from './components/Preloader'
 import NotFound from './components/NotFound'
-import KonamiEgg from './components/KonamiEgg'
-
-// Themed views are lazy-loaded so the lobby paints instantly.
-const StraightView = lazy(() => import('./views/StraightView'))
-const PokerView = lazy(() => import('./views/PokerView'))
-const ChessView = lazy(() => import('./views/ChessView'))
-
-function ViewFallback() {
-  return (
-    <div className="felt-bg flex min-h-screen flex-col items-center justify-center gap-4 text-muted">
-      <div className="relative h-14 w-14">
-        <span className="absolute inset-0 animate-spin rounded-full border-2 border-gold/20 border-t-gold" />
-        <span className="absolute inset-0 grid place-items-center text-gold">♠</span>
-      </div>
-      <span className="animate-pulse font-mono text-xs uppercase tracking-[0.4em]">
-        dealing…
-      </span>
-    </div>
-  )
-}
+import { usePrefersReducedMotion } from './lib/usePrefersReducedMotion'
 
 export default function App() {
   const location = useLocation()
+  const reduced = usePrefersReducedMotion()
 
-  // Always start each route at the top.
+  // Lenis smooth scroll — app-wide so every route feels the same. Skipped for
+  // reduced motion, where native (instant) scrolling is the right behavior.
   useEffect(() => {
+    if (reduced) return
+    const lenis = new Lenis({ autoRaf: true, anchors: true })
+    return () => lenis.destroy()
+  }, [reduced])
+
+  // Route changes: honor #hash targets (e.g. /#work from a case page),
+  // otherwise start at the top.
+  useEffect(() => {
+    if (location.hash) {
+      const t = setTimeout(() => {
+        document.querySelector(location.hash)?.scrollIntoView({ behavior: 'smooth' })
+      }, 80)
+      return () => clearTimeout(t)
+    }
     window.scrollTo(0, 0)
-  }, [location.pathname])
+  }, [location.pathname, location.hash])
 
   return (
     // reducedMotion="user" makes every animation instant when the visitor's OS
-    // requests reduced motion — an accessibility guard across all views.
+    // requests reduced motion — an accessibility guard across the whole site.
     <MotionConfig reducedMotion="user">
-      <BootSequence />
-      <KonamiEgg />
+      <Preloader />
       <CommandPalette />
-      <Suspense fallback={<ViewFallback />}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Lobby />} />
-            <Route path="/poker" element={<PokerView />} />
-            <Route path="/chess" element={<ChessView />} />
-            <Route path="/straight" element={<StraightView />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AnimatePresence>
-      </Suspense>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/work/:id" element={<CaseStudy />} />
+        {/* Old multi-view routes — keep deep links alive */}
+        <Route path="/poker" element={<Navigate to="/" replace />} />
+        <Route path="/chess" element={<Navigate to="/" replace />} />
+        <Route path="/straight" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </MotionConfig>
   )
 }

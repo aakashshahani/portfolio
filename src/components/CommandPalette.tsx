@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { profile, projects, resumes } from '../data/content'
 
 type Command = {
@@ -17,13 +17,24 @@ export default function CommandPalette() {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
+  const location = useLocation()
 
   const commands = useMemo<Command[]>(() => {
+    // Jump to a section on the home page (navigating there first if needed).
+    const go = (hash: string) => () => {
+      if (location.pathname !== '/') navigate('/')
+      // Wait a tick so the home page exists before scrolling.
+      setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+      }, 60)
+    }
     const nav: Command[] = [
-      { id: 'lobby', label: 'Go to Lobby', glyph: '⌂', run: () => navigate('/') },
-      { id: 'poker', label: 'Poker table', glyph: '♠', run: () => navigate('/poker') },
-      { id: 'chess', label: 'Chess view', glyph: '♟', run: () => navigate('/chess') },
-      { id: 'straight', label: 'Classic view', glyph: '▦', run: () => navigate('/straight') },
+      { id: 'top', label: 'Home', glyph: '⌂', run: go('#top') },
+      { id: 'work', label: 'Selected work', glyph: '▤', run: go('#work') },
+      { id: 'about', label: 'About', glyph: '◍', run: go('#about') },
+      { id: 'experience', label: 'Experience', glyph: '≡', run: go('#experience') },
+      { id: 'journey', label: 'Journey', hint: 'Hong Kong → Hyderabad → Tampa', glyph: '◐', run: go('#journey') },
+      { id: 'contact', label: 'Contact', glyph: '✉', run: go('#contact') },
     ]
     const links: Command[] = [
       { id: 'github', label: 'Open GitHub', glyph: '↗', run: () => window.open(profile.github, '_blank') },
@@ -32,8 +43,7 @@ export default function CommandPalette() {
     ]
     const secrets: Command[] = [
       { id: 'hire', label: 'sudo hire-me', hint: 'best decision you’ll make today', glyph: '✦', run: () => window.open(`mailto:${profile.email}?subject=Let’s talk`) },
-      { id: 'whoami', label: 'whoami', hint: profile.tagline, glyph: '✦', run: () => navigate('/straight') },
-      { id: 'allin', label: 'all in', hint: 'go to the poker table', glyph: '♠', run: () => navigate('/poker') },
+      { id: 'whoami', label: 'whoami', hint: profile.tagline, glyph: '✦', run: go('#about') },
     ]
     const res: Command[] = resumes.map((r) => ({
       id: `resume-${r.id}`,
@@ -45,11 +55,11 @@ export default function CommandPalette() {
       id: `proj-${p.id}`,
       label: p.name,
       hint: p.tagline,
-      glyph: p.card.suit,
-      run: () => p.repo && window.open(p.repo, '_blank'),
+      glyph: '◇',
+      run: () => navigate(`/work/${p.id}`),
     }))
     return [...nav, ...links, ...res, ...proj, ...secrets]
-  }, [navigate])
+  }, [navigate, location.pathname])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -125,14 +135,14 @@ export default function CommandPalette() {
                     runAt(active)
                   }
                 }}
-                placeholder="Jump to a view, project, or link…"
+                placeholder="Jump to a section, project, or link…"
                 className="w-full bg-transparent py-4 text-fg outline-none placeholder:text-muted"
               />
             </div>
             <ul className="max-h-80 overflow-y-auto p-2">
               {filtered.length === 0 && (
                 <li className="px-3 py-6 text-center text-sm text-muted">
-                  No matches. Fold and try again.
+                  No matches.
                 </li>
               )}
               {filtered.map((c, i) => (
@@ -141,7 +151,7 @@ export default function CommandPalette() {
                     onMouseEnter={() => setActive(i)}
                     onClick={() => runAt(i)}
                     className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
-                      i === active ? 'bg-white/8' : ''
+                      i === active ? 'bg-fg/5' : ''
                     }`}
                   >
                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gold/10 text-gold">
