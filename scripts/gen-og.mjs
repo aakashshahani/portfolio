@@ -11,10 +11,9 @@ const out = resolve(__dirname, '../public/og.png')
 const svg = `
 <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="felt" cx="50%" cy="-5%" r="90%">
-      <stop offset="0%" stop-color="#123a2c"/>
-      <stop offset="55%" stop-color="#0e2b22" stop-opacity="0.4"/>
-      <stop offset="100%" stop-color="#0a0f0d"/>
+    <radialGradient id="glow" cx="50%" cy="-10%" r="90%">
+      <stop offset="0%" stop-color="#e8c37a" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#0a0a0b" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#f4dca6"/>
@@ -23,23 +22,20 @@ const svg = `
     </linearGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="#0a0f0d"/>
-  <rect width="1200" height="630" fill="url(#felt)"/>
+  <rect width="1200" height="630" fill="#0a0a0b"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
   <rect x="24" y="24" width="1152" height="582" rx="28" fill="none" stroke="#e8c37a" stroke-opacity="0.18"/>
 
-  <!-- faint suits -->
-  <text x="1010" y="200" font-family="Segoe UI Symbol, Arial" font-size="220" fill="#ffffff" fill-opacity="0.04">♠</text>
-  <text x="120" y="560" font-family="Segoe UI Symbol, Arial" font-size="160" fill="#ffffff" fill-opacity="0.04">♟</text>
+  <circle cx="98" cy="118" r="6" fill="#e8c37a"/>
+  <text x="118" y="126" font-family="Segoe UI, Arial" font-size="24" letter-spacing="6" fill="#8f9094">OPEN TO SOFTWARE, ML &amp; DATA ROLES</text>
 
-  <text x="90" y="150" font-family="Segoe UI Symbol, Arial" font-size="40" fill="#e8c37a" fill-opacity="0.8">♠ ♟ ▦</text>
+  <text x="88" y="280" font-family="Segoe UI, Arial" font-weight="800" font-size="100" letter-spacing="-2" fill="#ececec">AAKASH</text>
+  <text x="88" y="382" font-family="Segoe UI, Arial" font-weight="800" font-size="100" letter-spacing="-2" fill="url(#gold)">SHAHANI</text>
 
-  <text x="88" y="300" font-family="Segoe UI, Arial" font-weight="800" font-size="96" fill="url(#gold)">Aakash Shahani</text>
+  <text x="92" y="455" font-family="Segoe UI, Arial" font-weight="600" font-size="33" fill="#ececec">Software &amp; ML Engineer — pipelines, agents, recommenders.</text>
 
-  <text x="92" y="370" font-family="Segoe UI, Arial" font-weight="600" font-size="38" fill="#e9efec">Builder of ML systems, real-time pipelines &amp; AI agents.</text>
-
-  <text x="92" y="430" font-family="Segoe UI, Arial" font-size="30" fill="#8a978f">CS grad · Software / ML / Data Engineering · Tampa, FL</text>
-
-  <text x="92" y="545" font-family="Segoe UI, Arial" font-weight="600" font-size="26" fill="#e8c37a">Pick your table — poker, chess, or classic.</text>
+  <text x="92" y="525" font-family="Segoe UI, Arial" font-size="24" letter-spacing="2" fill="#e8c37a">HONG KONG → HYDERABAD → TAMPA · 6 LANGUAGES</text>
+  <text x="92" y="565" font-family="Segoe UI, Arial" font-size="22" fill="#8f9094">aakashshahani.vercel.app</text>
 </svg>`
 
 const resvg = new Resvg(svg, {
