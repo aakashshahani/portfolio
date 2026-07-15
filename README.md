@@ -1,22 +1,21 @@
-# Aakash Shahani — Portfolio ♠♟
+# Aakash Shahani — Portfolio
 
-A personal portfolio with a twist: a **"Dealer's Choice" lobby** where visitors pick
-how to experience my work — a **Poker table**, a **Chess game**, or a clean **Classic**
-view. Same content, three ways to play it.
+[![ci](https://github.com/aakashshahani/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/aakashshahani/portfolio/actions/workflows/ci.yml)
 
-Built with **React + Vite + TypeScript + Tailwind CSS + Framer Motion**.
+A single-page portfolio: dark, typography-first, and metric-driven. Projects are
+full-width rows with headline numbers, a cursor-following screenshot preview on
+desktop, and inline expandable case details.
 
-## The three tables
+Built with **React + Vite + TypeScript + Tailwind CSS + Framer Motion + Lenis**.
 
-| Route        | View     | Idea                                                              |
-| ------------ | -------- | ---------------------------------------------------------------- |
-| `/`          | Lobby    | Pick your table. ⌘K command palette everywhere.                  |
-| `/poker`     | Poker    | Projects dealt as cards that flip on hover; skills as a chip stack. |
-| `/chess`     | Chess    | Career as opening → midgame → endgame; a "mate in one" unlocks the resume. |
-| `/straight`  | Classic  | Conventional, recruiter-friendly layout. The professional default. |
+## Structure
+
+Everything is one page (`/`) with anchored sections: hero, selected work,
+by-the-numbers, about + current research, experience, skills, and contact.
+A ⌘K / Ctrl-K command palette jumps anywhere.
 
 All content lives in a single file: [`src/data/content.ts`](src/data/content.ts).
-Edit it once and every view updates.
+Edit it once and the whole site updates.
 
 ## Develop
 
@@ -44,12 +43,16 @@ Downloadable PDFs live in [`public/resumes/`](public/resumes). Three role-target
 versions: Software Engineer, Data Scientist, Data Engineer. Drop replacements in with
 the same filenames to update them.
 
+## Assets
+
+- `npm run gen:og` — regenerates the social share image (`public/og.png`).
+- `node scripts/gen-icons.mjs` — re-renders app icons from `public/favicon.svg`.
+
 ## Accessibility & performance
 
-- Respects `prefers-reduced-motion`.
-- Keyboard-navigable (⌘K palette, focusable cards, Esc to close overlays).
-- Lazy-loaded views so the lobby paints instantly.
-- Semantic HTML + Open Graph / meta tags for sharing.
+- Respects `prefers-reduced-motion` (animations become instant, smooth scroll disabled).
+- Keyboard-navigable (⌘K palette, focusable rows, Esc to close overlays).
+- WebP screenshots, self-contained assets, semantic HTML + Open Graph tags.
 
 ---
 

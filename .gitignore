@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 
-# Claude Code local settings / screenshot output
+# Local tooling / screenshot output
 .claude/
 .shots/
 
