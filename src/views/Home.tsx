@@ -16,7 +16,6 @@ import {
   education,
   skills,
   currentWork,
-  marqueeItems,
   story,
   type Project,
 } from '../data/content'
@@ -61,7 +60,6 @@ export default function Home() {
       <ScrollGauge />
       <Nav />
       <Hero />
-      <Marquee />
       <Work gh={gh} />
       <Numbers />
       <About />
@@ -129,26 +127,6 @@ function MaskedLine({
       >
         {children}
       </motion.span>
-    </span>
-  )
-}
-
-/** Live clock pinned to Aakash's timezone — part of the instrument read-out. */
-function LiveClock() {
-  const [now, setNow] = useState(() => new Date())
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(t)
-  }, [])
-  return (
-    <span className="tabular-nums">
-      {new Intl.DateTimeFormat('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-        timeZone: 'America/New_York',
-      }).format(now)}
     </span>
   )
 }
@@ -239,34 +217,12 @@ function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: base + 1.0, duration: 0.8 }}
-          className="mt-16 flex items-center justify-between border-t border-line pt-5 font-mono text-[10px] uppercase tracking-[0.25em] text-muted"
+          className="mt-16 flex items-center justify-end border-t border-line pt-5 font-mono text-[10px] uppercase text-muted"
         >
-          <span className="hidden md:inline">{story.route}</span>
-          <span>
-            Local <LiveClock /> ET
-          </span>
           <span className="tracking-[0.4em]">Scroll ↓</span>
         </motion.div>
       </div>
     </section>
-  )
-}
-
-/* ---- Marquee -------------------------------------------------------------- */
-
-function Marquee() {
-  const items = [...marqueeItems, ...marqueeItems]
-  return (
-    <div aria-hidden className="overflow-hidden border-y border-line py-5">
-      <div className="marquee-track flex w-max items-center gap-10">
-        {items.map((item, i) => (
-          <span key={i} className="flex items-center gap-10 whitespace-nowrap font-mono text-sm uppercase tracking-[0.25em] text-muted">
-            {item}
-            <span className="text-gold/60">·</span>
-          </span>
-        ))}
-      </div>
-    </div>
   )
 }
 
@@ -484,7 +440,6 @@ function WorkRow({
 
 const numbers = [
   { value: 5, decimals: 0, suffix: '', label: 'Projects shipped' },
-  { value: 6, decimals: 0, suffix: '', label: 'Languages spoken' },
   { value: 2.8, decimals: 1, suffix: 'ms', label: 'p99 serving latency' },
   { value: 88, decimals: 0, suffix: '%', label: 'Peak test coverage' },
 ]
@@ -492,7 +447,7 @@ const numbers = [
 function Numbers() {
   return (
     <section className="border-y border-line px-6 py-16">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
+      <div className="mx-auto grid max-w-6xl grid-cols-3 gap-x-6 gap-y-10">
         {numbers.map((n) => (
           <motion.div key={n.label} {...fadeUp} className="text-center">
             <div className="font-display text-3xl font-semibold text-gradient-gold md:text-4xl">
@@ -613,7 +568,7 @@ function About() {
   return (
     <section id="about" className="scroll-mt-24 px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="02 — About" title="Who I am" meta="Tampa, FL" />
+        <SectionHeading eyebrow="02 — About" title="Who I am" />
         <div className="mt-12 grid gap-10 md:grid-cols-[1.3fr_1fr] md:gap-14">
           <div>
             <motion.div {...fadeUp}>
@@ -790,12 +745,6 @@ function Contact() {
           </div>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
             <span>{profile.availability}</span>
-            <span className="hidden md:inline">·</span>
-            <span>{profile.location}</span>
-            <span className="hidden md:inline">·</span>
-            <span className="font-mono text-xs">
-              Local <LiveClock /> ET
-            </span>
           </div>
         </motion.div>
         <div className="mt-8 flex flex-col gap-2 text-xs text-muted md:flex-row md:items-center md:justify-between">

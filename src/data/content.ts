@@ -270,27 +270,10 @@ export const projects: Project[] = [
   },
 ]
 
-// Marquee strip between hero and work.
-export const marqueeItems = [
-  'Real-time pipelines',
-  'Agentic RAG',
-  'LLM agents',
-  'Recommenders',
-  'Fraud ML',
-  'Kafka',
-  'Spark',
-  'PyTorch',
-  'FastAPI',
-  'Docker',
-  'PostgreSQL',
-  'Anthropic API',
-]
-
 // The person behind the projects — journey + languages.
 export const story = {
   narrative:
     'Grew up in Hong Kong, moved to Hyderabad in grade 9, came to Tampa for college. Three cities, three school systems, six languages.',
-  route: 'Hong Kong → Hyderabad → Tampa',
   stops: [
     {
       place: 'Hong Kong',

@@ -33,7 +33,7 @@ export default function CommandPalette() {
       { id: 'work', label: 'Selected work', glyph: '▤', run: go('#work') },
       { id: 'about', label: 'About', glyph: '◍', run: go('#about') },
       { id: 'experience', label: 'Experience', glyph: '≡', run: go('#experience') },
-      { id: 'journey', label: 'Journey', hint: 'Hong Kong → Hyderabad → Tampa', glyph: '◐', run: go('#journey') },
+      { id: 'journey', label: 'Journey', glyph: '◐', run: go('#journey') },
       { id: 'contact', label: 'Contact', glyph: '✉', run: go('#contact') },
     ]
     const links: Command[] = [

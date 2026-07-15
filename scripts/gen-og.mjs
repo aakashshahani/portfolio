@@ -34,8 +34,7 @@ const svg = `
 
   <text x="92" y="455" font-family="Segoe UI, Arial" font-weight="600" font-size="33" fill="#ececec">Software &amp; ML Engineer — pipelines, agents, recommenders.</text>
 
-  <text x="92" y="525" font-family="Segoe UI, Arial" font-size="24" letter-spacing="2" fill="#e8c37a">HONG KONG → HYDERABAD → TAMPA · 6 LANGUAGES</text>
-  <text x="92" y="565" font-family="Segoe UI, Arial" font-size="22" fill="#8f9094">aakashshahani.vercel.app</text>
+  <text x="92" y="530" font-family="Segoe UI, Arial" font-size="24" letter-spacing="2" fill="#e8c37a">aakashshahani.vercel.app</text>
 </svg>`
 
 const resvg = new Resvg(svg, {

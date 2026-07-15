@@ -77,7 +77,7 @@ export default function Portrait({ compact = false }: { compact?: boolean }) {
 
       {!compact && (
         <span className="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-          {profile.name} · {profile.location}
+          {profile.name}
         </span>
       )}
     </div>
