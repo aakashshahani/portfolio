@@ -33,7 +33,7 @@ export const profile = {
   role: 'Software & ML Engineer',
   tagline: 'Builder of ML systems, real-time pipelines & AI agents.',
   intro:
-    'Computer Science grad from the University of South Florida. I build production-grade ML and data systems — real-time streaming pipelines, agentic RAG platforms, fraud models, and AI agents that reason under uncertainty. I care about rigor: honest evaluation, leakage-free pipelines, tests that fail on the right things.',
+    'Computer Science grad from the University of South Florida. I build production-grade ML and data systems — real-time streaming pipelines, batch data lakehouses on AWS, agentic RAG platforms, fraud models, and AI agents that reason under uncertainty. I care about rigor: honest evaluation, leakage-free pipelines, tests that fail on the right things.',
   location: 'Tampa, FL',
   email: 'aakashs@usf.edu',
   phone: '863-616-3789',
@@ -138,12 +138,23 @@ export const skills: { group: string; items: string[] }[] = [
     ],
   },
   {
+    group: 'Data Engineering',
+    items: [
+      'Apache Airflow',
+      'dbt',
+      'Apache Iceberg',
+      'Athena / Glue',
+      'Trino',
+      'Great Expectations',
+      'Star schema / SCD2',
+    ],
+  },
+  {
     group: 'Cloud & DevOps',
     items: [
-      'AWS',
-      'Azure',
+      'AWS (S3/Glue/Athena)',
+      'Terraform',
       'Docker',
-      'Kubernetes',
       'GitHub Actions',
       'Prometheus / Grafana',
       'Linux',
@@ -200,6 +211,28 @@ export const projects: Project[] = [
     period: '2025',
     repo: 'https://github.com/aakashshahani/pokersim',
     image: '/projects/pokersim.webp',
+    featured: true,
+  },
+  {
+    id: 'urbanflow',
+    name: 'UrbanFlow',
+    tagline: 'Urban-mobility data lakehouse on AWS.',
+    blurb:
+      'An end-to-end batch data lakehouse: Airflow ingests NYC taxi trips and weather into Apache Iceberg tables on S3, dbt models them into a star schema, and Athena and Trino query them — deployed on real AWS with Terraform.',
+    highlights: [
+      'Built an end-to-end lakehouse over ~3M NYC taxi trips: Airflow orchestration (dynamic task mapping for backfills, retries, SLAs) → Apache Iceberg on S3 → dbt medallion (bronze → silver → gold star schema with an SCD Type 2 zone dimension) → Athena / Trino.',
+      'Cut Athena bytes scanned 97% (4.81 MB → 0.13 MB on a single-day query) by day-partitioning the Iceberg fact table; guaranteed idempotent backfills via Iceberg MERGE, holding fact_trips at 2.87M rows with 0 duplicates across re-runs.',
+      'Gated the pipeline with Great Expectations + 17 dbt tests that fail before bad data reaches gold; provisioned all AWS (S3, Glue, Athena) with Terraform and ran the same models on Athena in the cloud and Trino locally — 25 models and tests green on Athena.',
+    ],
+    metrics: [
+      { value: '−97%', label: 'Athena bytes scanned' },
+      { value: '2.87M', label: 'trips modeled' },
+      { value: '0', label: 'dupes on backfill' },
+    ],
+    stack: ['Apache Airflow', 'dbt', 'Apache Iceberg', 'AWS (S3/Glue/Athena)', 'Trino', 'Terraform', 'Great Expectations'],
+    period: 'Jul 2026',
+    repo: 'https://github.com/aakashshahani/urbanflow',
+    image: '/projects/urbanflow.png',
     featured: true,
   },
   {
