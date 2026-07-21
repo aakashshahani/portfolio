@@ -47,7 +47,7 @@ export default function CommandPalette() {
     ]
     const res: Command[] = resumes.map((r) => ({
       id: `resume-${r.id}`,
-      label: `Resume — ${r.label}`,
+      label: 'Download resume',
       glyph: '⤓',
       run: () => window.open(r.file, '_blank'),
     }))

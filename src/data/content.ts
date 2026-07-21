@@ -43,25 +43,13 @@ export const profile = {
   availability: 'Open to software, ML & data roles',
 }
 
-// Three role-targeted resumes, each a downloadable PDF in /public/resumes.
+// A single one-page resume, downloadable from /public/resumes.
 export const resumes = [
   {
-    id: 'swe',
-    label: 'Software Engineer',
-    file: '/resumes/Aakash_Shahani_SWE.pdf',
-    blurb: 'Backend, distributed systems, infra.',
-  },
-  {
-    id: 'ds',
-    label: 'Data Scientist',
-    file: '/resumes/Aakash_Shahani_DS.pdf',
-    blurb: 'ML, experimentation, statistics.',
-  },
-  {
-    id: 'de',
-    label: 'Data Engineer',
-    file: '/resumes/Aakash_Shahani_DE.pdf',
-    blurb: 'Pipelines, streaming, warehousing.',
+    id: 'resume',
+    label: 'Resume',
+    file: '/resumes/Aakash_Shahani_Resume.pdf',
+    blurb: 'One-page overview.',
   },
 ] as const
 
