@@ -1,12 +1,10 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   AnimatePresence,
   motion,
   useInView,
-  useMotionValue,
   useScroll,
-  useSpring,
   useTransform,
 } from 'framer-motion'
 import {
@@ -21,14 +19,11 @@ import {
   type Project,
 } from '../data/content'
 import { useSeo } from '../lib/useSeo'
-import { usePrefersReducedMotion } from '../lib/usePrefersReducedMotion'
 import { useRepoStats, type RepoStat } from '../lib/useRepoStats'
 import ResumeButton from '../components/ResumeButton'
 import SocialLinks from '../components/SocialLinks'
 import Portrait from '../components/Portrait'
-import CustomCursor from '../components/fx/CustomCursor'
 import HeroField from '../components/fx/HeroField'
-import ScrollGauge from '../components/fx/ScrollGauge'
 import Magnetic from '../components/fx/Magnetic'
 import CountUp from '../components/fx/CountUp'
 import { willPreload } from '../components/Preloader'
@@ -55,10 +50,8 @@ export default function Home() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="grain min-h-screen bg-ink"
+      className="min-h-screen bg-ink"
     >
-      <CustomCursor />
-      <ScrollGauge />
       <Nav />
       <Hero />
       <Work gh={gh} />
@@ -180,8 +173,9 @@ function Hero() {
                 transition={{ duration: 0.7, delay: base + 0.5, ease }}
                 className="max-w-xl text-lg leading-relaxed text-muted"
               >
-                {profile.role} — real-time pipelines, agentic RAG, recommenders,
-                and AI agents that reason under uncertainty.
+                I build and rigorously evaluate ML and data systems — a live
+                agentic-RAG platform, exactly-once streaming pipelines, and LLM
+                benchmarking behind a paper under review.
               </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
@@ -198,6 +192,23 @@ function Hero() {
                   </a>
                 </Magnetic>
                 <SocialLinks />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: base + 0.75, ease }}
+                className="pointer-events-auto flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-muted"
+              >
+                <a
+                  href="https://scholarlens-research.vercel.app"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition-colors hover:text-gold"
+                >
+                  Live product ↗
+                </a>
+                <span>Paper under review · Computers in Human Behavior</span>
               </motion.div>
             </div>
           </div>
@@ -231,36 +242,12 @@ function Hero() {
 
 function Work({ gh }: { gh: Record<string, RepoStat> | null }) {
   const [expanded, setExpanded] = useState<string | null>(null)
-  const [hovered, setHovered] = useState<Project | null>(null)
-  const [fine, setFine] = useState(false)
-  const reduced = usePrefersReducedMotion()
-
-  // Floating screenshot preview that trails the cursor (desktop only).
-  const mx = useMotionValue(0)
-  const my = useMotionValue(0)
-  const px = useSpring(mx, { stiffness: 200, damping: 25, mass: 0.6 })
-  const py = useSpring(my, { stiffness: 200, damping: 25, mass: 0.6 })
-
-  useEffect(() => {
-    setFine(window.matchMedia('(pointer: fine)').matches)
-  }, [])
-
-  const onMove = (e: React.MouseEvent) => {
-    mx.set(e.clientX)
-    my.set(e.clientY)
-  }
-
-  const showPreview = fine && !reduced && hovered && expanded !== hovered.id
 
   return (
     <section id="work" className="scroll-mt-24 px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading
-          eyebrow="01 — Selected Work"
-          title="Built, measured, shipped"
-          meta="2025 — 2026"
-        />
-        <div className="mt-14" onMouseMove={onMove} onMouseLeave={() => setHovered(null)}>
+        <SectionHeading eyebrow="Selected work" title="Built, measured, shipped" />
+        <div className="mt-14">
           {projects.map((p, i) => (
             <WorkRow
               key={p.id}
@@ -269,31 +256,10 @@ function Work({ gh }: { gh: Record<string, RepoStat> | null }) {
               stat={gh?.[p.repo?.split('/').pop()?.toLowerCase() ?? '']}
               expanded={expanded === p.id}
               onToggle={() => setExpanded(expanded === p.id ? null : p.id)}
-              onHover={(h) => setHovered(h ? p : null)}
             />
           ))}
         </div>
       </div>
-
-      <AnimatePresence>
-        {showPreview && (
-          <motion.div
-            key={hovered.id}
-            className="pointer-events-none fixed left-0 top-0 z-40 hidden md:block"
-            style={{ x: px, y: py, translateX: '-50%', translateY: '-115%' }}
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            transition={{ duration: 0.25, ease }}
-          >
-            <img
-              src={hovered.image}
-              alt=""
-              className="h-48 w-80 rounded-xl border border-line-strong object-cover object-top shadow-2xl"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   )
 }
@@ -304,21 +270,17 @@ function WorkRow({
   stat,
   expanded,
   onToggle,
-  onHover,
 }: {
   project: Project
   index: number
   stat?: RepoStat
   expanded: boolean
   onToggle: () => void
-  onHover: (hovering: boolean) => void
 }) {
   return (
     <motion.article {...fadeUp} className="border-t border-line last:border-b">
       <button
         onClick={onToggle}
-        onMouseEnter={() => onHover(true)}
-        onMouseLeave={() => onHover(false)}
         aria-expanded={expanded}
         className="group grid w-full grid-cols-[auto_1fr_auto] items-baseline gap-x-5 gap-y-2 py-7 text-left transition-colors md:grid-cols-[3rem_1fr_auto_2rem] md:items-center md:py-9"
       >
@@ -424,9 +386,6 @@ function WorkRow({
                       className="h-full max-h-72 w-full object-cover object-top"
                     />
                   </div>
-                  <figcaption className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-                    fig. {String(index + 1).padStart(2, '0')} — {p.name} interface
-                  </figcaption>
                 </figure>
               )}
             </div>
@@ -451,7 +410,7 @@ function Numbers() {
       <div className="mx-auto grid max-w-6xl grid-cols-3 gap-x-6 gap-y-10">
         {numbers.map((n) => (
           <motion.div key={n.label} {...fadeUp} className="text-center">
-            <div className="font-display text-3xl font-semibold text-gradient-gold md:text-4xl">
+            <div className="font-display text-3xl font-semibold text-gold md:text-4xl">
               <CountUp value={n.value} decimals={n.decimals} suffix={n.suffix} />
             </div>
             <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
@@ -482,7 +441,7 @@ function Journey() {
     <section id="journey" className="scroll-mt-24 border-t border-line px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="04 — Journey"
+          eyebrow="Journey"
           title="Three cities, six languages"
           meta="HKG → HYD → TPA"
         />
@@ -569,7 +528,7 @@ function About() {
   return (
     <section id="about" className="scroll-mt-24 px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="02 — About" title="Who I am" />
+        <SectionHeading eyebrow="About" title="Who I am" />
         <div className="mt-12 grid gap-10 md:grid-cols-[1.3fr_1fr] md:gap-14">
           <div>
             <motion.div {...fadeUp}>
@@ -612,7 +571,7 @@ function ExperienceSection() {
   return (
     <section id="experience" className="scroll-mt-24 border-t border-line px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="03 — Experience" title="Where I've worked" meta="2024 — present" />
+        <SectionHeading eyebrow="Experience" title="Where I've worked" />
         <div className="mt-12 space-y-10">
           {experience.map((e) => (
             <motion.div
@@ -691,7 +650,7 @@ function Skills() {
   return (
     <section className="border-t border-line px-6 py-24">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="05 — Toolkit" title="Skills & stack" meta={`${skills.length} domains`} />
+        <SectionHeading eyebrow="Toolkit" title="Skills & stack" />
         <div className="mt-12">
           {skills.map((group) => (
             <motion.div
@@ -720,7 +679,7 @@ function Contact() {
     <footer id="contact" className="scroll-mt-24 border-t border-line px-6 pb-10 pt-24 md:pt-32">
       <div className="mx-auto max-w-6xl">
         <motion.p {...fadeUp} className="font-mono text-xs uppercase tracking-[0.35em] text-gold">
-          06 — Contact
+          Contact
         </motion.p>
         <motion.h2
           {...fadeUp}
@@ -728,7 +687,7 @@ function Contact() {
         >
           Let's build something
           <br />
-          <span className="text-gradient-gold">that holds up.</span>
+          <span className="text-gold">that holds up.</span>
         </motion.h2>
         <motion.div {...fadeUp} className="mt-10">
           <a
@@ -789,7 +748,7 @@ function SectionHeading({
   meta?: string
 }) {
   return (
-    <motion.div {...fadeUp} className="tick-b pb-6">
+    <motion.div {...fadeUp} className="border-b border-line pb-6">
       <p className="font-mono text-xs uppercase tracking-[0.35em] text-gold">
         {eyebrow}
       </p>
@@ -799,7 +758,7 @@ function SectionHeading({
         </h2>
         {meta && (
           <p className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-            [ {meta} ]
+            {meta}
           </p>
         )}
       </div>

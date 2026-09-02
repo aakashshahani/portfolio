@@ -54,7 +54,7 @@ export const resumes = [
 
 export const experience: Experience[] = [
   {
-    role: 'AI/ML Engineer',
+    role: 'AI/ML Researcher',
     org: 'CSSAI Lab, University of South Florida',
     location: 'Tampa, FL',
     period: 'Jan 2026 — Present',
