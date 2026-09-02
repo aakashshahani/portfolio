@@ -87,6 +87,7 @@ export default function GlobeScene({
   const statusRef = useRef(onStatus)
   statusRef.current = onStatus
   const stopFlight = useRef<(() => void) | null>(null)
+  const visibleRef = useRef(true)
 
   // Track the container so the WebGL canvas always fits it.
   useEffect(() => {
@@ -96,8 +97,18 @@ export default function GlobeScene({
     measure()
     const ro = new ResizeObserver(measure)
     ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
+    // Pause the flight loop and auto-rotation while the globe is off-screen.
+    const io = new IntersectionObserver(([e]) => {
+      visibleRef.current = e.isIntersecting
+      const c = globeRef.current?.controls()
+      if (c) c.autoRotate = e.isIntersecting && !reduced
+    })
+    io.observe(el)
+    return () => {
+      ro.disconnect()
+      io.disconnect()
+    }
+  }, [reduced])
 
   useEffect(() => () => stopFlight.current?.(), [])
 
@@ -138,7 +149,16 @@ export default function GlobeScene({
     park(0)
     statusRef.current?.({ index: 0, flying: false, at: STOPS[0].name })
 
+    let lastNow = performance.now()
     const tick = (now: number) => {
+      const dt = now - lastNow
+      lastNow = now
+      // Off-screen: freeze progress (no jump on return) and skip the work.
+      if (!visibleRef.current) {
+        phaseStart += dt
+        raf = requestAnimationFrame(tick)
+        return
+      }
       const elapsed = now - phaseStart
       const lastStop = at === STOPS.length - 1
 

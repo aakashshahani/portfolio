@@ -16,7 +16,6 @@ import { useSeo } from '../lib/useSeo'
 import { useRepoStats, type RepoStat } from '../lib/useRepoStats'
 import ResumeButton from '../components/ResumeButton'
 import SocialLinks from '../components/SocialLinks'
-import Portrait from '../components/Portrait'
 import HeroField from '../components/fx/HeroField'
 import Magnetic from '../components/fx/Magnetic'
 import CountUp from '../components/fx/CountUp'
@@ -135,8 +134,8 @@ function Hero() {
     <section id="top" className="hero-bg relative flex min-h-screen flex-col justify-center px-6 pt-24">
       <HeroField />
       <div className="pointer-events-none relative mx-auto w-full max-w-6xl">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_19rem] lg:gap-16">
-          <div>
+        <div>
+          <div className="max-w-3xl">
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -207,14 +206,6 @@ function Hero() {
             </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: base + 0.45, ease }}
-            className="pointer-events-auto mx-auto w-full max-w-[15rem] sm:max-w-[17rem] lg:max-w-none"
-          >
-            <Portrait compact />
-          </motion.div>
         </div>
 
         {/* Instrument read-out — in flow, so it can never collide with content */}

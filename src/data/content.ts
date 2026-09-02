@@ -31,7 +31,7 @@ export const profile = {
   initials: 'AS',
   pronouns: 'he/him',
   role: 'Software & ML Engineer',
-  tagline: 'Builder of ML systems, real-time pipelines & AI agents.',
+  tagline: 'Builds ML and data systems, and tests them honestly.',
   intro:
     'I build machine-learning and data systems end to end, but the part I care about most is testing them honestly. On one project I found that 46% of a widely-used benchmark was leaking between the train and test sets, so I re-ran it cleanly and reported the real number. I would rather ship something I can defend than something that only looks good in a demo.',
   location: 'Tampa, FL',

@@ -60,7 +60,7 @@ export default function CaseStudy() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="font-mono text-xs uppercase tracking-[0.35em] text-gold"
         >
-          Case {String(idx + 1).padStart(2, '0')} — {p.period}
+          Case study · {p.period}
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
@@ -84,11 +84,11 @@ export default function CaseStudy() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease }}
-          className="tick-b mt-12 grid grid-cols-3 gap-6 pb-8"
+          className="mt-12 grid grid-cols-3 gap-6 border-b border-line pb-8"
         >
           {p.metrics.map((m) => (
             <div key={m.label}>
-              <div className="font-display text-2xl font-semibold text-gradient-gold md:text-4xl">
+              <div className="font-display text-2xl font-semibold text-gold md:text-4xl">
                 {m.value}
               </div>
               <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted md:text-[11px]">
@@ -108,11 +108,6 @@ export default function CaseStudy() {
                 className="w-full object-cover object-top"
               />
             </div>
-            <span aria-hidden className="absolute -left-1.5 -top-1.5 h-4 w-4 border-l border-t border-gold/40" />
-            <span aria-hidden className="absolute -right-1.5 -top-1.5 h-4 w-4 border-r border-t border-gold/40" />
-            <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-              fig. {String(idx + 1).padStart(2, '0')} — {p.name} interface
-            </figcaption>
           </motion.figure>
         )}
 
