@@ -14,6 +14,7 @@ import {
   projects,
   experience,
   education,
+  publications,
   skills,
   currentWork,
   story,
@@ -439,7 +440,7 @@ function WorkRow({
 /* ---- Numbers --------------------------------------------------------------- */
 
 const numbers = [
-  { value: 5, decimals: 0, suffix: '', label: 'Projects shipped' },
+  { value: 7, decimals: 0, suffix: '', label: 'Projects shipped' },
   { value: 2.8, decimals: 1, suffix: 'ms', label: 'p99 serving latency' },
   { value: 88, decimals: 0, suffix: '%', label: 'Peak test coverage' },
 ]
@@ -658,6 +659,26 @@ function ExperienceSection() {
               ))}
             </div>
           </motion.div>
+
+          {publications.map((p) => (
+            <motion.div
+              key={p.title}
+              {...fadeUp}
+              className="grid gap-3 border-l border-line-strong pl-6 md:grid-cols-[1fr_2fr] md:gap-8"
+            >
+              <div>
+                <h3 className="font-display text-lg font-semibold">Publication</h3>
+                <p className="mt-1 text-sm text-muted">{p.venue}</p>
+                <p className="mt-0.5 font-mono text-xs text-gold">
+                  {p.status} · {p.year}
+                </p>
+              </div>
+              <div className="self-center">
+                <p className="text-sm italic leading-relaxed text-fg/85">{p.title}</p>
+                <p className="mt-1 text-sm text-muted">{p.authors}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

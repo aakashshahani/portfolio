@@ -35,8 +35,7 @@ export const profile = {
   intro:
     'Computer Science grad from the University of South Florida. I build production-grade ML and data systems — real-time streaming pipelines, batch data lakehouses on AWS, agentic RAG platforms, fraud models, and AI agents that reason under uncertainty. I care about rigor: honest evaluation, leakage-free pipelines, tests that fail on the right things.',
   location: 'Tampa, FL',
-  email: 'aakashs@usf.edu',
-  phone: '863-616-3789',
+  email: 'aakashshahani21@gmail.com',
   github: 'https://github.com/aakashshahani',
   githubUser: 'aakashshahani',
   linkedin: 'https://linkedin.com/in/aakash-shahani',
@@ -55,25 +54,36 @@ export const resumes = [
 
 export const experience: Experience[] = [
   {
-    role: 'ML Research Assistant',
+    role: 'AI/ML Engineer',
     org: 'CSSAI Lab, University of South Florida',
     location: 'Tampa, FL',
-    period: 'Oct 2025 — Present',
+    period: 'Jan 2026 — Present',
     current: true,
     bullets: [
-      'Benchmarking 3 model families (fine-tuned RoBERTa, a GPT-class model via the OpenAI Batch API, and few-shot LLaMA 3 on Groq) to classify negotiation-dialogue behavior per turn, validated against a human-labeled gold set at Cohen’s κ 0.76 across 1,030 turns.',
-      'Built a reproducible batch-inference and evaluation harness (versioned JSONL pipelines, automated scoring) with a PhD mentor and a graduate researcher for model comparisons and ablations across 1,000+ labeled turns.',
+      'Built a reproducible LLM evaluation pipeline (temperature-0 batch inference) benchmarking 3 frontier LLMs (GPT-4.1, Gemini 2.5 Flash, Claude Sonnet 4.6) against 6 trained baselines on 2 detection tasks.',
+      'Drove the detector to 0.79 macro-F1 / 0.81 accuracy, significantly beating every trained baseline (XGBoost, fine-tuned DistilBERT) and approaching human-expert agreement, through precision-first prompt engineering, grouped cross-validation, and bootstrapped significance testing.',
     ],
   },
   {
-    role: 'AI Research Assistant',
+    role: 'Machine Learning Research Intern',
     org: 'University of South Florida',
     location: 'Tampa, FL',
     period: 'Aug 2024 — Apr 2025',
     bullets: [
-      'Engineered an end-to-end bioinformatics pipeline pulling protein sequences from the UniProt REST API and applying MMseqs2 clustering at a 30% similarity threshold to cut redundancy and build a diverse training set.',
-      'Designed and trained an LSTM binding-site classifier (BCE loss, Adam + grid search, dropout, LR scheduling), benchmarking against CLAPE-SMB and SCRIBER with k-fold cross-validation.',
+      'Trained an LSTM binding-site classifier (focal loss, Adam, dropout, LR scheduling) to 0.65 AUPRC / 0.61 MCC on a held-out test set, benchmarked against published CLAPE-SMB/SCRIBER with k-fold cross-validation.',
+      'Exposed 46% train–test homology leakage in the published binding-site benchmark via MMseqs2 30%-identity clustering, re-scoring with cluster-grouped k-fold CV for an honest 0.57 AUPRC.',
     ],
+  },
+]
+
+export const publications = [
+  {
+    authors: 'R. A. Baten, M. A. Urmi, A. Shahani',
+    title:
+      'Strategic Adaptability Under Changing Contexts: Behavioral Reorganization in Negotiation',
+    venue: 'Computers in Human Behavior (Elsevier)',
+    status: 'Under review',
+    year: '2026',
   },
 ]
 
@@ -97,7 +107,7 @@ export const education = {
 export const skills: { group: string; items: string[] }[] = [
   {
     group: 'Languages',
-    items: ['Python', 'Go', 'C/C++', 'Java', 'TypeScript', 'SQL', 'Bash'],
+    items: ['Python', 'C/C++', 'TypeScript', 'SQL', 'Bash'],
   },
   {
     group: 'Backend & Distributed',
@@ -196,7 +206,7 @@ export const projects: Project[] = [
       { value: '46%', label: 'leakage caught' },
     ],
     stack: ['PyTorch', 'ESM-2', 'LoRA / PEFT', 'MMseqs2', 'FastAPI', 'Docker'],
-    period: 'Jan 2025',
+    period: 'Sep 2026',
     repo: 'https://github.com/aakashshahani/protein-binding-esm-lora',
     image: '/projects/proteinbind.png',
     featured: true,
@@ -347,10 +357,10 @@ export const story = {
 
 // Current research — the "Now" block.
 export const currentWork = {
-  title: 'Negotiation Behavior & Cue Classification',
+  title: 'Negotiation Behavior & Cue Detection',
   org: 'CSSAI Lab @ USF',
-  status: 'In progress',
+  status: 'Paper under review',
   blurb:
-    'AI-assisted negotiation-coaching research: classifying strategic-adaptation cues turn-by-turn against the Heunis et al. (2024) framework, benchmarking fine-tuned RoBERTa, GPT, and LLaMA 3, and validating against human annotation at κ 0.76 over 1,030 dialogue turns.',
-  tags: ['Research', 'LLMs', 'Human eval', 'RoBERTa / GPT / LLaMA 3'],
+    'AI-assisted negotiation-coaching research: detecting strategic-adaptation cues turn-by-turn against the Heunis et al. (2024) framework. Benchmarked GPT-4.1, Gemini 2.5 Flash, and Claude Sonnet 4.6 against trained baselines to 0.79 macro-F1, validated against human annotation across 1,030 dialogue turns. Co-authored paper under review at Computers in Human Behavior (Elsevier).',
+  tags: ['Research', 'LLM evaluation', 'Human eval', 'Paper under review'],
 }
