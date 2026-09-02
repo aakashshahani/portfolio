@@ -32,7 +32,7 @@ const svg = `
   <text x="88" y="280" font-family="Segoe UI, Arial" font-weight="800" font-size="100" letter-spacing="-2" fill="#ececec">AAKASH</text>
   <text x="88" y="382" font-family="Segoe UI, Arial" font-weight="800" font-size="100" letter-spacing="-2" fill="url(#gold)">SHAHANI</text>
 
-  <text x="92" y="455" font-family="Segoe UI, Arial" font-weight="600" font-size="33" fill="#ececec">Software &amp; ML Engineer — pipelines, agents, recommenders.</text>
+  <text x="92" y="455" font-family="Segoe UI, Arial" font-weight="600" font-size="33" fill="#ececec">AI/ML researcher and engineer. Systems that ship and hold up.</text>
 
   <text x="92" y="530" font-family="Segoe UI, Arial" font-size="24" letter-spacing="2" fill="#e8c37a">aakashshahani.vercel.app</text>
 </svg>`

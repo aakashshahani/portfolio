@@ -16,7 +16,6 @@ import { useSeo } from '../lib/useSeo'
 import { useRepoStats, type RepoStat } from '../lib/useRepoStats'
 import ResumeButton from '../components/ResumeButton'
 import SocialLinks from '../components/SocialLinks'
-import HeroField from '../components/fx/HeroField'
 import Magnetic from '../components/fx/Magnetic'
 import CountUp from '../components/fx/CountUp'
 import { willPreload } from '../components/Preloader'
@@ -132,7 +131,6 @@ function Hero() {
 
   return (
     <section id="top" className="hero-bg relative flex min-h-screen flex-col justify-center px-6 pt-24">
-      <HeroField />
       <div className="pointer-events-none relative mx-auto w-full max-w-6xl">
         <div>
           <div className="max-w-3xl">

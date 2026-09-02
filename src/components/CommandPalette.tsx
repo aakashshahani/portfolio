@@ -16,6 +16,8 @@ export default function CommandPalette() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const lastFocused = useRef<HTMLElement | null>(null)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -88,9 +90,32 @@ export default function CommandPalette() {
   }, [])
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 40)
-    else setQuery('')
+    if (open) {
+      lastFocused.current = document.activeElement as HTMLElement
+      setTimeout(() => inputRef.current?.focus(), 40)
+    } else {
+      setQuery('')
+      lastFocused.current?.focus?.()
+    }
   }, [open])
+
+  // Keep Tab focus inside the open palette (accessibility).
+  const onPanelKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Tab') return
+    const nodes = panelRef.current?.querySelectorAll<HTMLElement>(
+      'input, button, a[href], [tabindex]:not([tabindex="-1"])',
+    )
+    if (!nodes || nodes.length === 0) return
+    const first = nodes[0]
+    const last = nodes[nodes.length - 1]
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault()
+      last.focus()
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault()
+      first.focus()
+    }
+  }
 
   const runAt = (i: number) => {
     const cmd = filtered[i]
@@ -110,12 +135,17 @@ export default function CommandPalette() {
           onClick={() => setOpen(false)}
         >
           <motion.div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Command palette"
             className="glass w-full max-w-xl overflow-hidden rounded-2xl shadow-2xl"
             initial={{ opacity: 0, scale: 0.97, y: -8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: -8 }}
             transition={{ duration: 0.18 }}
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={onPanelKeyDown}
           >
             <div className="flex items-center gap-3 border-b border-line px-4">
               <span className="text-muted">⌘</span>
