@@ -33,7 +33,7 @@ export const profile = {
   role: 'Software & ML Engineer',
   tagline: 'Builder of ML systems, real-time pipelines & AI agents.',
   intro:
-    'Computer Science grad from the University of South Florida. I build production-grade ML and data systems — real-time streaming pipelines, batch data lakehouses on AWS, agentic RAG platforms, fraud models, and AI agents that reason under uncertainty. I care about rigor: honest evaluation, leakage-free pipelines, tests that fail on the right things.',
+    'I build machine-learning and data systems end to end, but the part I care about most is testing them honestly. On one project I found that 46% of a widely-used benchmark was leaking between the train and test sets, so I re-ran it cleanly and reported the real number. I would rather ship something I can defend than something that only looks good in a demo.',
   location: 'Tampa, FL',
   email: 'aakashshahani21@gmail.com',
   github: 'https://github.com/aakashshahani',
