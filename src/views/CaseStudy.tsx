@@ -5,7 +5,6 @@ import { projects, profile } from '../data/content'
 import { useSeo } from '../lib/useSeo'
 import ResumeButton from '../components/ResumeButton'
 import SocialLinks from '../components/SocialLinks'
-import CustomCursor from '../components/fx/CustomCursor'
 import NotFound from '../components/NotFound'
 import { ArrowLeft, ArrowRight, ExternalIcon, GitHubIcon } from '../components/Icons'
 
@@ -39,10 +38,8 @@ export default function CaseStudy() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="grain min-h-screen bg-ink"
+      className="min-h-screen bg-ink"
     >
-      <CustomCursor />
-
       <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/70 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Link

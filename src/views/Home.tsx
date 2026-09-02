@@ -1,12 +1,6 @@
-import { lazy, Suspense, useRef, useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  AnimatePresence,
-  motion,
-  useInView,
-  useScroll,
-  useTransform,
-} from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
   profile,
   projects,
@@ -426,9 +420,7 @@ function Numbers() {
 /* ---- Journey — the story, visualized ------------------------------------------ */
 
 function Journey() {
-  const holder = useRef<HTMLDivElement>(null)
-  // Fetch the three.js chunk just before the section scrolls into view.
-  const near = useInView(holder, { once: true, margin: '400px' })
+  const [showGlobe, setShowGlobe] = useState(false)
   const [flight, setFlight] = useState<{
     index: number
     flying: boolean
@@ -448,10 +440,9 @@ function Journey() {
         <div className="mt-12 grid items-center gap-10 lg:grid-cols-[1.15fr_1fr]">
           <motion.div
             {...fadeUp}
-            ref={holder}
             className="relative h-[340px] overflow-hidden rounded-2xl border border-line sm:h-[440px]"
           >
-            {near && (
+            {showGlobe ? (
               <Suspense
                 fallback={
                   <div className="grid h-full place-items-center font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
@@ -461,6 +452,21 @@ function Journey() {
               >
                 <GlobeScene onStatus={setFlight} />
               </Suspense>
+            ) : (
+              <button
+                onClick={() => setShowGlobe(true)}
+                className="group grid h-full w-full place-items-center gap-3 bg-ink-2/30 transition-colors hover:bg-ink-2/50"
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+                  Hong Kong · Hyderabad · Tampa
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 px-4 py-2 text-sm font-semibold text-gold transition-colors group-hover:bg-gold group-hover:text-ink">
+                  Spin the interactive globe
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted/60">
+                  loads 3D on demand
+                </span>
+              </button>
             )}
             {/* Live flight readout */}
             <div className="pointer-events-none absolute inset-x-4 bottom-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
@@ -471,7 +477,7 @@ function Journey() {
                     : `● ${flight.at}`
                   : ''}
               </span>
-              <span>drag to spin</span>
+              <span>{showGlobe ? 'drag to spin' : ''}</span>
             </div>
           </motion.div>
 
