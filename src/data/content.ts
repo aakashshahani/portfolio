@@ -179,6 +179,29 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: 'proteinbind',
+    name: 'ProteinBind',
+    tagline: 'Per-residue ligand binding-site prediction with ESM-2 + LoRA.',
+    blurb:
+      'A per-residue protein binding-site predictor built on ESM-2 embeddings and LoRA fine-tuning, benchmarked against the published CLAPE-SMB method on its own split — where I caught 46% train–test homology and re-measured generalization honestly.',
+    highlights: [
+      'Built a modeling ladder on ESM-2 650M embeddings — a BiLSTM baseline, a frozen-encoder token head, and LoRA fine-tuning — reaching test AUPRC 0.715 / MCC 0.665, within 0.034 MCC of the published CLAPE-SMB benchmark (0.699).',
+      'Caught 46% train–test sequence homology in the published split via MMseqs2 clustering at 30% identity, then re-scored on a homology-reduced test set and cluster-grouped 5-fold CV (AUPRC 0.567 ± 0.028) — the honest number reported next to the headline.',
+      'Handled 2.7% class imbalance with focal loss; fine-tuned the 650M encoder with LoRA on a free Colab T4 (it won’t train on a 4 GB laptop GPU) and a 150M variant locally, with zero-retuning transfer to a separate IDP set at AUPRC 0.799.',
+      'Shipped a FastAPI + Docker per-residue inference service with cached embeddings, offline W&B tracking, unit tests, and GitHub Actions CI.',
+    ],
+    metrics: [
+      { value: '0.715', label: 'test AUPRC' },
+      { value: '0.665', label: 'MCC (SOTA 0.699)' },
+      { value: '46%', label: 'leakage caught' },
+    ],
+    stack: ['PyTorch', 'ESM-2', 'LoRA / PEFT', 'MMseqs2', 'FastAPI', 'Docker'],
+    period: 'Jan 2025',
+    repo: 'https://github.com/aakashshahani/protein-binding-esm-lora',
+    image: '/projects/proteinbind.png',
+    featured: true,
+  },
+  {
     id: 'pokersim',
     name: 'PokerSim',
     tagline: 'A platform for evaluating AI agents under hidden information.',
