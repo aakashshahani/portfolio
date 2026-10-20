@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { MotionConfig } from 'framer-motion'
 import Lenis from 'lenis'
@@ -15,10 +15,15 @@ export default function App() {
 
   // Lenis smooth scroll — app-wide so every route feels the same. Skipped for
   // reduced motion, where native (instant) scrolling is the right behavior.
+  const lenisRef = useRef<Lenis | null>(null)
   useEffect(() => {
     if (reduced) return
     const lenis = new Lenis({ autoRaf: true, anchors: true })
-    return () => lenis.destroy()
+    lenisRef.current = lenis
+    return () => {
+      lenis.destroy()
+      lenisRef.current = null
+    }
   }, [reduced])
 
   // Route changes: honor #hash targets (e.g. /#work from a case page),
@@ -26,11 +31,16 @@ export default function App() {
   useEffect(() => {
     if (location.hash) {
       const t = setTimeout(() => {
-        document.querySelector(location.hash)?.scrollIntoView({ behavior: 'smooth' })
+        // getElementById, not querySelector: a hash like "#2024" or "#a.b" is not
+        // a valid CSS selector and would throw.
+        const id = decodeURIComponent(location.hash.slice(1))
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
       }, 80)
       return () => clearTimeout(t)
     }
-    window.scrollTo(0, 0)
+    // Lenis keeps its own scroll position; jump through it so the reset sticks.
+    if (lenisRef.current) lenisRef.current.scrollTo(0, { immediate: true })
+    else window.scrollTo(0, 0)
   }, [location.pathname, location.hash])
 
   return (
