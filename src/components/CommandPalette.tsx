@@ -22,14 +22,18 @@ export default function CommandPalette() {
   const location = useLocation()
 
   const commands = useMemo<Command[]>(() => {
-    // Jump to a section on the home page (navigating there first if needed).
+    // Jump to a section on the home page. Navigating to "/#section" lets the
+    // app's route effect do the scroll once Home is mounted (a fixed timeout
+    // raced it from a case page); only an unchanged URL needs a direct scroll.
     const go = (hash: string) => () => {
-      if (location.pathname !== '/') navigate('/')
-      // Wait a tick so the home page exists before scrolling.
-      setTimeout(() => {
-        document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
-      }, 60)
+      if (location.pathname === '/' && location.hash === hash) {
+        document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        navigate({ pathname: '/', hash })
+      }
     }
+    // External links: never hand the new tab a handle back to this one.
+    const openTab = (url: string) => () => window.open(url, '_blank', 'noopener,noreferrer')
     const nav: Command[] = [
       { id: 'top', label: 'Home', glyph: '⌂', run: go('#top') },
       { id: 'work', label: 'Selected work', glyph: '▤', run: go('#work') },
@@ -39,8 +43,8 @@ export default function CommandPalette() {
       { id: 'contact', label: 'Contact', glyph: '✉', run: go('#contact') },
     ]
     const links: Command[] = [
-      { id: 'github', label: 'Open GitHub', glyph: '↗', run: () => window.open(profile.github, '_blank') },
-      { id: 'linkedin', label: 'Open LinkedIn', glyph: '↗', run: () => window.open(profile.linkedin, '_blank') },
+      { id: 'github', label: 'Open GitHub', glyph: '↗', run: openTab(profile.github) },
+      { id: 'linkedin', label: 'Open LinkedIn', glyph: '↗', run: openTab(profile.linkedin) },
       { id: 'email', label: 'Copy email', hint: profile.email, glyph: '✉', run: () => navigator.clipboard?.writeText(profile.email) },
     ]
     const secrets: Command[] = [
@@ -51,7 +55,7 @@ export default function CommandPalette() {
       id: `resume-${r.id}`,
       label: 'Download resume',
       glyph: '⤓',
-      run: () => window.open(r.file, '_blank'),
+      run: openTab(r.file),
     }))
     const proj: Command[] = projects.map((p) => ({
       id: `proj-${p.id}`,
@@ -61,7 +65,7 @@ export default function CommandPalette() {
       run: () => navigate(`/work/${p.id}`),
     }))
     return [...nav, ...links, ...res, ...proj, ...secrets]
-  }, [navigate, location.pathname])
+  }, [navigate, location.pathname, location.hash])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -75,6 +79,12 @@ export default function CommandPalette() {
 
   const [active, setActive] = useState(0)
   useEffect(() => setActive(0), [query, open])
+
+  // Keep the keyboard-highlighted command visible inside the scrolling list.
+  const listRef = useRef<HTMLUListElement>(null)
+  useEffect(() => {
+    listRef.current?.children[active]?.scrollIntoView({ block: 'nearest' })
+  }, [active])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -169,7 +179,7 @@ export default function CommandPalette() {
                 className="w-full bg-transparent py-4 text-fg outline-none placeholder:text-muted"
               />
             </div>
-            <ul className="max-h-80 overflow-y-auto p-2">
+            <ul ref={listRef} className="max-h-80 overflow-y-auto p-2">
               {filtered.length === 0 && (
                 <li className="px-3 py-6 text-center text-sm text-muted">
                   No matches.
