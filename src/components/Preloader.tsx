@@ -1,18 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePrefersReducedMotion } from '../lib/usePrefersReducedMotion'
-
-const KEY = 'as-preloaded'
-
-/** Reads the once-per-session flag synchronously so other components can
- *  delay their entrances while the preloader is covering the page. */
-export function willPreload() {
-  try {
-    return sessionStorage.getItem(KEY) !== '1'
-  } catch {
-    return false
-  }
-}
+import { PRELOAD_KEY as KEY, willPreload } from '../lib/preload'
 
 /**
  * Once-per-session boot: a metric counting 0 → 100, then the curtain slides
@@ -34,6 +23,7 @@ export default function Preloader() {
       return
     }
     let raf = 0
+    let exitTimer: ReturnType<typeof setTimeout> | undefined
     const t0 = performance.now()
     const DURATION = 900
     const step = (t: number) => {
@@ -47,11 +37,14 @@ export default function Preloader() {
         } catch {
           /* private mode */
         }
-        setTimeout(() => setExiting(true), 150)
+        exitTimer = setTimeout(() => setExiting(true), 150)
       }
     }
     raf = requestAnimationFrame(step)
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(exitTimer)
+    }
   }, [shown, reduced])
 
   if (!shown || reduced) return null

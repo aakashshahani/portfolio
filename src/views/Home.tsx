@@ -18,7 +18,7 @@ import ResumeButton from '../components/ResumeButton'
 import SocialLinks from '../components/SocialLinks'
 import Magnetic from '../components/fx/Magnetic'
 import CountUp from '../components/fx/CountUp'
-import { willPreload } from '../components/Preloader'
+import { willPreload } from '../lib/preload'
 import { ArrowRight, ExternalIcon, GitHubIcon } from '../components/Icons'
 
 // three.js lives in its own chunk — fetched only when the Journey section nears.
