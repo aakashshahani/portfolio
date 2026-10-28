@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { projects, profile } from '../data/content'
@@ -26,9 +25,6 @@ export default function CaseStudy() {
     p ? `${p.name} — ${profile.name}` : `Not found — ${profile.name}`,
     p?.blurb,
   )
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [id])
 
   if (!p) return <NotFound />
   const next = projects[(idx + 1) % projects.length]
