@@ -21,7 +21,7 @@ import CountUp from '../components/fx/CountUp'
 import { willPreload } from '../lib/preload'
 import { ArrowRight, ExternalIcon, GitHubIcon } from '../components/Icons'
 
-// three.js lives in its own chunk — fetched only when the Journey section nears.
+// three.js lives in its own chunk — fetched only when the visitor opens the globe.
 const GlobeScene = lazy(() => import('../components/GlobeScene'))
 
 const ease = [0.22, 1, 0.36, 1] as const
